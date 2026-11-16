@@ -27,8 +27,8 @@ export const site = {
   name: "TANFIP",
   tagline: "fisioterapia & pilates",
   owner: "Tania Castro",
-  whatsapp: "593949809459", // código de país + número, sin +, sin espacios
-  phone: "+593949809459",
+  whatsapp: "51949809459", // código de país (51 = Perú) + número, sin +, sin espacios
+  phone: "+51949809459",
   phoneDisplay: "949 809 459",
   email: "",
   address: "",
