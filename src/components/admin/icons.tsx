@@ -49,3 +49,4 @@ export const IconKey = mk("ico-sway", <><circle cx="8" cy="15" r="4" /><path d="
 export const IconNote = mk("ico-sway", <><path d="M6 3.500h9l4 4V20.500H6Z" /><path d="M15 3.500V8h4M9 12.500h7M9 16h7" /></>);
 export const IconTarget = mk("ico-spin", <><circle cx="12" cy="12" r="8" /><circle cx="12" cy="12" r="4" /><circle cx="12" cy="12" r=".8" /></>);
 export const IconSparkle = mk("ico-spin", <path d="M12 3c.6 4.500 2.500 6.400 7 7-4.500.6-6.400 2.500-7 7-.6-4.500-2.500-6.400-7-7 4.500-.6 6.400-2.500 7-7Z" />);
+export const IconUser2 = mk("ico-sway", <><circle cx="12" cy="8" r="3.500" /><path d="M5 20c.8-4 3.500-6 7-6s6.200 2 7 6" /></>);

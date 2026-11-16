@@ -64,3 +64,8 @@ Barra lateral ícono+texto (cajón en móvil), buscador global (`/` o `Ctrl+K`),
 ## 8. Fuera del MVP / pendiente
 
 Subida real de archivos (Storage), recordatorios automáticos por WhatsApp/correo, pagos y facturación, instalación del admin como PWA propia (manifest `/admin`), gestión de usuarios desde la UI.
+
+## 9. Añadidos tras la primera revisión
+
+- **Aprobar / rechazar solicitud**: además de crear paciente y cita, se envía un correo al paciente (Resend, si `RESEND_API_KEY` está definido; solo servicio, fecha y hora, nunca datos clínicos) y se abre un **segundo paso en el mismo modal** con el mensaje de WhatsApp ya redactado (editable). El botón "Abrir WhatsApp y enviar" lleva directo al chat del paciente (`wa.me/<teléfono>?text=…`). Igual al proponer otra hora y al rechazar.
+- **Encabezado**: arriba a la derecha va el perfil (menú: Mi perfil, Configuración de la cuenta, Cerrar sesión). Se quitó el perfil de la barra lateral. `/admin/perfil` permite cambiar la contraseña (con Supabase Auth).

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
+import { connection } from "next/server";
 import "./admin.css";
 
 export const metadata: Metadata = {
@@ -7,6 +8,12 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 export const viewport: Viewport = { themeColor: "#1b7f8e", width: "device-width", initialScale: 1 };
+
+// Marca explícita de que el panel es dinámico (sesión en cada petición): evita el error de metadatos bloqueados al prerenderizar.
+async function Dinamico() {
+  await connection();
+  return null;
+}
 
 function Cargando() {
   return (
@@ -23,6 +30,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className="adm">
       <Suspense fallback={<Cargando />}>{children}</Suspense>
+      <Suspense>
+        <Dinamico />
+      </Suspense>
     </div>
   );
 }
+
+// Panel autenticado: lee la sesión en cada petición, no tiene sentido una navegación instantánea estática.
+export const instant = false;

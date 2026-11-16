@@ -62,7 +62,7 @@ dialog.a-modal.a-modal-lg { max-width: min(100vw - 1.5rem, 60rem); }
 dialog.a-modal::backdrop { background: rgb(18 49 58 / .5); backdrop-filter: blur(3px); animation: fade .2s ease both; }
 dialog.a-modal[open] .a-modal-box { animation: pop .28s cubic-bezier(.2,.9,.3,1.1) both; }
 .a-modal-box { background: #fbfdfc; border-radius: 1.5rem; box-shadow: 0 40px 80px -30px rgb(18 49 58 / .6); display: flex; flex-direction: column; max-height: 92dvh; overflow: hidden; }
-.a-modal-body { padding: 1.25rem 1.5rem; overflow-y: auto; }
+.a-modal-body { padding: 1.25rem 1.5rem; overflow-y: auto; overflow-x: hidden; }
 .a-modal-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.1rem 1.5rem; border-bottom: 1px solid rgb(27 127 142 / .12); }
 .a-modal-foot { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .6rem; padding: .9rem 1.5rem; border-top: 1px solid rgb(27 127 142 / .12); background: rgb(230 243 239 / .5); }
 @keyframes fade { from { opacity: 0; } to { opacity: 1; } }

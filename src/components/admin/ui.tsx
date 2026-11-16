@@ -19,6 +19,10 @@ export function Modal({
     if (!d) return;
     if (open && !d.open) d.showModal();
     if (!open && d.open) d.close();
+    // Al ocultarse la página (navegación con Activity) o desmontar, un modal abierto bloquearía todo el documento.
+    return () => {
+      if (d.open) d.close();
+    };
   }, [open]);
   return (
     <dialog
