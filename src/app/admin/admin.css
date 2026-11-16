@@ -111,3 +111,27 @@ dialog.a-modal[open] .a-modal-box { animation: pop .28s cubic-bezier(.2,.9,.3,1.
 @media (prefers-reduced-motion: reduce) {
   dialog.a-modal::backdrop, dialog.a-modal[open] .a-modal-box, .a-toast { animation: none; }
 }
+
+/* Fondo del login: cuadrícula suave que se desvanece hacia los bordes. */
+.login-bg { position: relative; isolation: isolate; }
+.login-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(rgb(20 96 110 / 0.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(20 96 110 / 0.14) 1px, transparent 1px);
+  background-size: 44px 44px;
+  -webkit-mask-image: radial-gradient(ellipse 85% 80% at 50% 45%, #000 35%, transparent 100%);
+  mask-image: radial-gradient(ellipse 85% 80% at 50% 45%, #000 35%, transparent 100%);
+}
+.login-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(40rem 28rem at 85% 8%, rgb(139 185 62 / 0.18), transparent 70%),
+    radial-gradient(38rem 30rem at 8% 92%, rgb(27 127 142 / 0.16), transparent 70%);
+}
