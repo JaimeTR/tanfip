@@ -2,6 +2,7 @@ import "server-only";
 import { cache } from "react";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { neonConfigured } from "@/lib/db/neon-config";
 import { demoAllowed, supabaseConfigured } from "@/lib/supabase/config";
 import { createUserClient } from "@/lib/supabase/server";
 import type { Rol } from "@/lib/db/types";
@@ -17,7 +18,7 @@ export const CLAVE_DEMO = "tanfip-demo";
 /** Sesión actual (o null). Debe llamarse dentro de <Suspense> / tiempo de petición. */
 export const getSession = cache(async (): Promise<Session | null> => {
   if (!supabaseConfigured) {
-    if (!demoAllowed) return null;
+    if (!neonConfigured && !demoAllowed) return null;
     return verifySession((await cookies()).get(SESSION_COOKIE)?.value);
   }
   const sb = await createUserClient();

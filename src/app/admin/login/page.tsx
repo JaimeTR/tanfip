@@ -1,12 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { LoginForm } from "./LoginForm";
+import { neonConfigured } from "@/lib/db/neon-config";
 import { demoAllowed, supabaseConfigured } from "@/lib/supabase/config";
 
 export const metadata = { title: "Ingresar" };
 
 export default function LoginPage() {
-  const demo = !supabaseConfigured && demoAllowed;
+  const demo = !supabaseConfigured && !neonConfigured && demoAllowed;
   return (
     <main className="login-bg grid min-h-dvh place-items-center content-center justify-items-center px-4 py-10">
       <div className="a-card w-full max-w-md p-7 shadow-2xl shadow-teal-deep/10 sm:p-9">

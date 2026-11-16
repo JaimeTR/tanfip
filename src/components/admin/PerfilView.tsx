@@ -38,7 +38,7 @@ export function PerfilView({ user, puedeCambiarClave }: { user: { nombre: string
             <button type="submit" className="btn btn-primary btn-sm" disabled={busy}>{busy ? "Guardando…" : "Cambiar contraseña"}</button>
           </form>
         ) : (
-          <p className="text-sm text-muted">Estás en modo local de prueba: el cambio de contraseña se activa al conectar Supabase Auth.</p>
+          <p className="text-sm text-muted">La contraseña de esta cuenta se administra en la configuración del servidor (variable ADMIN_PASSWORD).</p>
         )}
       </section>
     </div>

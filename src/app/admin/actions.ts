@@ -265,7 +265,7 @@ export type { Cita };
 // ---------- perfil ----------
 export async function cambiarClave(nueva: unknown) {
   return run(AMBOS, async () => {
-    if (!supabaseConfigured) throw new ValidationError("Disponible al conectar Supabase Auth.");
+    if (!supabaseConfigured) throw new ValidationError("La contraseña de esta cuenta se cambia en la configuración del servidor.");
     const clave = typeof nueva === "string" ? nueva : "";
     if (clave.length < 8 || clave.length > 128) throw new ValidationError("La contraseña debe tener entre 8 y 128 caracteres.");
     const { error } = await (await createUserClient()).auth.updateUser({ password: clave });

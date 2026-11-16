@@ -3,6 +3,8 @@ import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { CLAVE_DEMO, USUARIOS_DEMO } from "@/lib/auth/session";
 import { SESSION_COOKIE, SESSION_MAX_AGE, signSession } from "@/lib/auth/token";
+import { createHash, timingSafeEqual } from "node:crypto";
+import { neonConfigured } from "@/lib/db/neon-config";
 import { limitar } from "@/lib/rate-limit";
 import { demoAllowed, supabaseConfigured } from "@/lib/supabase/config";
 import { createUserClient } from "@/lib/supabase/server";
@@ -28,6 +30,21 @@ export async function iniciarSesion(_prev: LoginState, form: FormData): Promise<
       await sb.auth.signOut();
       return { error: "Tu usuario no tiene acceso al panel. Pídele acceso a la profesional." };
     }
+  } else if (neonConfigured) {
+    // Usuario único (Tania): correo y contraseña salen de variables de entorno, nunca del código.
+    const adminEmail = (process.env.ADMIN_EMAIL ?? "").trim().toLowerCase();
+    const adminClave = process.env.ADMIN_PASSWORD ?? "";
+    if (!adminEmail || !adminClave || (process.env.NODE_ENV === "production" && !process.env.ADMIN_SESSION_SECRET)) {
+      return { error: "El acceso no está configurado todavía." };
+    }
+    const h = (x: string) => createHash("sha256").update(x).digest();
+    const claveOk = timingSafeEqual(h(clave), h(adminClave));
+    if (email !== adminEmail || !claveOk) return { error: GENERICO };
+    (await cookies()).set(
+      SESSION_COOKIE,
+      await signSession({ id: "admin", email: adminEmail, nombre: process.env.ADMIN_NAME || "Tania Castro", rol: "profesional" }),
+      { httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", path: "/", maxAge: SESSION_MAX_AGE }
+    );
   } else {
     if (!demoAllowed) return { error: "El acceso no está configurado todavía." };
     const u = USUARIOS_DEMO.find((x) => x.email === email);
