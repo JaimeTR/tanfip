@@ -95,7 +95,7 @@ export function Footer() {
           </div>
 
           {/* barra inferior: una sola línea */}
-          <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-white/15 py-5 text-xs text-white/65">
+          <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-white/15 pb-24 pt-5 text-xs sm:pb-5 text-white/65">
             <p>
               © 2026 TANFIP · Fisioterapia &amp; Pilates · by {site.owner}
             </p>

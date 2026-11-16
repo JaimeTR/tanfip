@@ -66,7 +66,7 @@ export default function Home() {
                 descClassName="rise d3 mt-4 max-w-lg text-lg leading-relaxed text-muted sm:text-xl"
                 className="rise d1 mt-3 font-display text-[clamp(2.25rem,1.3rem+2.8vw,3.75rem)] font-semibold leading-[1.1] text-teal-deep"
               />
-              <div className="rise d4 mt-6 flex flex-wrap gap-3">
+              <div className="rise d4 mt-6 grid gap-3 sm:flex sm:flex-wrap">
                 <a href="#agenda" className="btn btn-primary">
                   <IconCalendar className="size-5" /> Solicitar mi cita <IconArrow />
                 </a>
@@ -77,7 +77,7 @@ export default function Home() {
             </div>
 
             {/* collage animado de los servicios principales: se ajusta a la altura de la pantalla */}
-            <div className="rise d2 relative mx-auto h-[clamp(16rem,50dvh,27rem)] w-full max-w-lg lg:ml-auto lg:mr-0">
+            <div className="rise d2 relative mx-auto h-[clamp(16rem,84vw,27rem)] w-full max-w-lg lg:h-[clamp(16rem,50dvh,27rem)] lg:ml-auto lg:mr-0">
               <div className="float group/tile hov absolute left-0 top-0 aspect-[4/3] w-[78%] overflow-hidden rounded-[2rem] shadow-2xl ring-8 ring-white/80">
                 <div className="photo absolute inset-0">
                   <Slot name="hero-fisioterapia" alt="Sesión de fisioterapia" priority position="58% 45%" sizes="(min-width: 1024px) 28vw, 70vw" fallback={<ArtPhysio />} />
@@ -120,7 +120,7 @@ export default function Home() {
               return (
                 <Reveal key={s.id} variant={i === 1 ? "zoom" : i === 0 ? "left" : "right"} delay={i * 120}>
                   <article className="glass glass-solid lift hov group/tile flex h-full flex-col overflow-hidden rounded-[2rem]">
-                    <div className="relative aspect-[16/11] overflow-hidden">
+                    <div className="relative aspect-[16/10] overflow-hidden md:aspect-[16/11]">
                       <Slot name={s.photo} alt={s.alt} position={s.position} sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw" fallback={<ArtPhysio />} />
                     <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/25 to-transparent" aria-hidden="true" />
                     </div>
@@ -163,15 +163,17 @@ export default function Home() {
                   <span aria-hidden="true" className="absolute -right-14 top-1/2 hidden w-14 -translate-y-1/2 border-t-[3px] border-dotted border-teal/40 md:block" />
                 )}
                 <Reveal delay={i * 140}>
-                  <div className="glass lift hov relative h-full rounded-3xl p-7">
-                    <span className="relative mb-4 grid size-14 place-items-center rounded-2xl bg-gradient-to-br from-teal to-teal-deep text-white shadow-lg">
+                  <div className="glass lift hov relative flex h-full items-start gap-4 rounded-3xl p-5 md:block md:p-7">
+                    <span className="relative mb-0 grid size-14 shrink-0 md:mb-4 place-items-center rounded-2xl bg-gradient-to-br from-teal to-teal-deep text-white shadow-lg">
                       <Icon className="size-7" />
                       <span className="absolute -right-2 -top-2 grid size-6 place-items-center rounded-full bg-leaf-deep text-xs font-bold ring-2 ring-white">
                         {i + 1}
                       </span>
                     </span>
-                    <h3 className="text-lg font-semibold text-teal-deep">{t}</h3>
-                    <p className="mt-1 text-muted">{d}</p>
+                    <div>
+                      <h3 className="text-lg font-semibold text-teal-deep">{t}</h3>
+                      <p className="mt-1 text-muted">{d}</p>
+                    </div>
                   </div>
                 </Reveal>
               </li>
@@ -223,7 +225,7 @@ export default function Home() {
                     </li>
                   ))}
                 </ul>
-                <div className="mt-8 flex flex-wrap justify-center gap-3 md:justify-start">
+                <div className="mt-8 grid gap-3 sm:flex sm:flex-wrap sm:justify-center md:justify-start">
                   <a href="#agenda" className="btn btn-primary">
                     <IconCalendar className="size-5" /> Agenda conmigo <IconArrow />
                   </a>

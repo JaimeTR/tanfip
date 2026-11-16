@@ -56,7 +56,7 @@ export function Header() {
   return (
     <header className="fixed inset-x-0 top-0 z-50">
       <div
-        className={`mx-auto mt-3 flex h-[4.75rem] max-w-6xl items-center justify-between gap-4 rounded-full px-4 pr-3 transition-[background-color,box-shadow,border-color] duration-300 sm:px-6 sm:pr-4 ${
+        className={`mx-auto mt-3 flex h-[4.25rem] max-w-6xl sm:h-[4.75rem] items-center justify-between gap-4 rounded-full px-4 pr-3 transition-[background-color,box-shadow,border-color] duration-300 sm:px-6 sm:pr-4 ${
           scrolled || open
             ? "border border-white/80 bg-white/85 shadow-lg shadow-teal-deep/10 backdrop-blur-md"
             : "border border-transparent bg-transparent"
@@ -65,7 +65,7 @@ export function Header() {
       >
         <a href="#" aria-label="TANFIP, inicio" className="shrink-0 transition-transform hover:scale-[1.03]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/brand/logo-horizontal-color.svg" alt="TANFIP fisioterapia & pilates" width={220} height={60} className="h-12 w-auto sm:h-[3.25rem]" />
+          <img src="/brand/logo-horizontal-color.svg" alt="TANFIP fisioterapia & pilates" width={220} height={60} className="h-10 w-auto sm:h-[3.25rem]" />
         </a>
 
         <nav aria-label="Principal" className="hidden items-center gap-8 text-sm font-semibold md:flex">
@@ -82,13 +82,15 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <a href="#agenda" className="btn btn-primary !min-h-11 !px-5">
+          <a href="#agenda" className="btn btn-primary !min-h-11 whitespace-nowrap !px-4 sm:!px-5">
             <IconCalendar className="size-5" />
-            <span>Agendar cita</span>
+            <span>
+              Agendar<span className="hidden sm:inline"> cita</span>
+            </span>
           </a>
           <button
             type="button"
-            className="burger grid size-11 place-items-center gap-[5px] rounded-full md:hidden"
+            className="burger grid size-11 content-center place-items-center gap-[5px] rounded-full md:hidden"
             aria-label={open ? "Cerrar menú" : "Abrir menú"}
             aria-expanded={open}
             aria-controls="menu-movil"
