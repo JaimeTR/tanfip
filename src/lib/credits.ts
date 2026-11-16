@@ -1,0 +1,91 @@
+// Créditos de las fotos de Wikimedia Commons (licencias que exigen atribución).
+// Al reemplazar una foto por una propia, quita su línea de aquí.
+const by2 = "https://creativecommons.org/licenses/by/2.0";
+
+export const photoCredits = [
+  {
+    title: "Fisioterapeuta tratando la pierna de un paciente",
+    author: "Shixart1985",
+    license: "CC BY 2.0",
+    licenseUrl: by2,
+    page: "https://commons.wikimedia.org/wiki/File:Physiotherapist_working_examining_treating_injured_leg_of_male_patient.jpg",
+  },
+  {
+    file: "terapia-2",
+    title: "Tratamiento de pierna con banda elástica",
+    author: "Shixart1985",
+    license: "CC BY 2.0",
+    licenseUrl: by2,
+    page: "https://commons.wikimedia.org/wiki/File:Leg_treatment_in_physiatry_closeup._Physiotherapist_working_examining_treating.jpg",
+  },
+  {
+    title: "Masaje de pantorrilla",
+    author: "Shixart1985",
+    license: "CC BY 2.0",
+    licenseUrl: by2,
+    page: "https://commons.wikimedia.org/wiki/File:Physiotherapist_making_the_massage_of_tense_calf.jpg",
+  },
+  {
+    title: "Instructora de Pilates",
+    author: "Cristian.mirandapezo",
+    license: "CC BY-SA 4.0",
+    licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0",
+    page: "https://commons.wikimedia.org/wiki/File:Instructora_Pilates.jpg",
+  },
+  {
+    file: "galeria-1",
+    title: "Pilates en estudio",
+    author: "Helisusa",
+    license: "CC BY-SA 4.0",
+    licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0",
+    page: "https://commons.wikimedia.org/wiki/File:Pilates-back-stretch.jpg",
+  },
+  {
+    file: "galeria-2",
+    title: "Pilates con banda elástica",
+    author: "Helisusa",
+    license: "CC BY-SA 4.0",
+    licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0",
+    page: "https://commons.wikimedia.org/wiki/File:Pilates-hamstring-stretch.jpg",
+  },
+  {
+    file: "galeria-3",
+    title: "Pilates en terraza",
+    author: "NikStryker",
+    license: "CC BY-SA 4.0",
+    licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0",
+    page: "https://commons.wikimedia.org/wiki/File:Pilates_Cabane_14.jpg",
+  },
+  {
+    file: "galeria-4",
+    title: "Pilates al aire libre",
+    author: "NikStryker",
+    license: "CC BY-SA 4.0",
+    licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0",
+    page: "https://commons.wikimedia.org/wiki/File:Pilates_Dachterrasse.jpg",
+  },
+  {
+    file: "galeria-5",
+    title: "Estudio de Pilates reformer",
+    author: "Ajrehman",
+    license: "CC BY 3.0",
+    licenseUrl: "https://creativecommons.org/licenses/by/3.0",
+    page: "https://commons.wikimedia.org/wiki/File:STOTTPILATES_Studio.jpg",
+  },
+  {
+    file: "galeria-6",
+    title: "Ejercicio de Pilates en mat",
+    author: "J. Vílchez",
+    license: "Public domain",
+    licenseUrl: "https://commons.wikimedia.org/wiki/Commons:Licensing",
+    page: "https://commons.wikimedia.org/wiki/File:Pilates_01.jpg",
+  },
+  {
+    file: "galeria-7",
+    title: "Rehabilitación en camilla",
+    author: "Fabio Mazzola",
+    license: "CC BY-SA 4.0",
+    licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0",
+    page: "https://commons.wikimedia.org/wiki/File:Application_of_Resistive_Mode,_in_the_Achilles_tendon.jpg",
+  },
+] as const;
