@@ -145,6 +145,16 @@ export type Plan = {
 };
 export type PlanInput = Omit<Plan, "id" | "creadoEn" | "creadoPor" | "actualizadoEn" | "actualizadoPor"> & { id?: string };
 
+export type Archivo = {
+  id: string;
+  pacienteId: string;
+  nombre: string;
+  tipo: string; // MIME
+  tamano: number; // bytes
+  creadoEn: string;
+  creadoPor: string;
+};
+
 /** Textos editables de la web. Todos opcionales; los vacíos usan el valor por defecto de `src/lib/site.ts`. */
 export type SiteSettings = {
   heroTitulo: string;
@@ -187,6 +197,11 @@ export type Db = {
   listPlanes(pacienteId?: string): Promise<Plan[]>;
   savePlan(p: PlanInput, actor: string): Promise<Plan>;
   deletePlan(id: string, actor: string): Promise<void>;
+  // archivos del paciente (contenido en base64; solo profesional)
+  listArchivos(pacienteId: string): Promise<Archivo[]>;
+  saveArchivo(a: Pick<Archivo, "pacienteId" | "nombre" | "tipo" | "tamano">, base64: string, actor: string): Promise<Archivo>;
+  getArchivo(id: string): Promise<{ archivo: Archivo; base64: string } | null>;
+  deleteArchivo(id: string, actor: string): Promise<void>;
   // web
   getSettings(): Promise<Partial<SiteSettings>>;
   saveSettings(s: Partial<SiteSettings>, actor: string): Promise<void>;

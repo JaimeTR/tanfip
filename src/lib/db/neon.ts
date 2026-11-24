@@ -2,7 +2,7 @@
 // No hay RLS: toda autorización se hace en el servidor (acciones y rutas) antes de llegar aquí.
 import "server-only";
 import { neon } from "@neondatabase/serverless";
-import { ConflictError, type Db } from "./types";
+import { ConflictError, type Archivo, type Db } from "./types";
 
 type Row = Record<string, unknown>;
 
@@ -137,6 +137,19 @@ export function createNeonDb(url: string): Db {
     return filas.map((x) => conFicha(x.r as Row, (x.f as Row | null) ?? null));
   };
 
+  // La tabla de archivos se crea sola la primera vez (no hace falta correr una migración a mano).
+  let listoArchivos: Promise<unknown> | null = null;
+  const tablaArchivos = () =>
+    (listoArchivos ??= run(
+      `create table if not exists public.archivos (
+        id uuid primary key default gen_random_uuid(),
+        paciente_id uuid not null references public.pacientes (id) on delete cascade,
+        nombre text not null, tipo text not null, tamano integer not null, datos bytea not null,
+        creado_en timestamptz not null default now(), creado_por text not null default ''
+      )`,
+    ).then(() => run("create index if not exists archivos_paciente_idx on public.archivos (paciente_id)")).catch((e) => { listoArchivos = null; throw e; }));
+  const META = "id, paciente_id, nombre, tipo, tamano, creado_en, creado_por";
+
   return {
     listServicios: () => lista("select * from public.servicios order by nombre"),
     async saveServicio(s) {
@@ -188,6 +201,27 @@ export function createNeonDb(url: string): Db {
     savePlan: (p, actor) => guardarAuditado("plan_tratamiento", p, actor),
     deletePlan: (id) => borrar("plan_tratamiento", id),
 
+    async listArchivos(pid) {
+      await tablaArchivos();
+      return lista<Archivo>(`select ${META} from public.archivos where paciente_id = $1 order by creado_en desc`, [pid]);
+    },
+    async saveArchivo(a, base64, actor) {
+      await tablaArchivos();
+      const f = await run(
+        `insert into public.archivos (paciente_id, nombre, tipo, tamano, datos, creado_por) values ($1, $2, $3, $4, decode($5, 'base64'), $6) returning to_jsonb(archivos) - 'datos' as r`,
+        [a.pacienteId, a.nombre, a.tipo, a.tamano, base64, actor],
+      );
+      return fromRow<Archivo>(f[0]?.r as Row);
+    },
+    async getArchivo(id) {
+      await tablaArchivos();
+      const f = await run(`select to_jsonb(a) - 'datos' as r, encode(datos, 'base64') as b from public.archivos a where id = $1`, [id]);
+      return f[0] ? { archivo: fromRow<Archivo>(f[0].r as Row), base64: f[0].b as string } : null;
+    },
+    async deleteArchivo(id) {
+      await tablaArchivos();
+      await run("delete from public.archivos where id = $1", [id]);
+    },
     async getSettings() {
       const filas = await run("select clave, valor from public.site_settings");
       return Object.fromEntries(filas.map((r) => [r.clave as string, r.valor]));

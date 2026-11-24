@@ -125,6 +125,13 @@ export async function eliminarNota(id: unknown) {
     await db.audit(s.id, "eliminar", "nota", nid);
   });
 }
+export async function eliminarArchivo(id: unknown) {
+  return run(SOLO_PROF, async (s, db) => {
+    const aid = parseId(id);
+    await db.deleteArchivo(aid, s.id);
+    await db.audit(s.id, "eliminar", "archivo", aid);
+  });
+}
 export async function guardarPlan(raw: unknown) {
   return run(SOLO_PROF, async (s, db) => {
     const input = parsePlan(raw);

@@ -3,7 +3,7 @@ import { buscarChoque } from "./availability";
 import { crearSemilla, HORARIOS_BASE, SERVICIOS_BASE } from "./seed";
 import {
   ConflictError,
-  type Bloqueo, type Cita, type Db, type Horario, type Nota, type Paciente, type Plan, type Servicio, type SiteSettings, type Solicitud,
+  type Archivo, type Bloqueo, type Cita, type Db, type Horario, type Nota, type Paciente, type Plan, type Servicio, type SiteSettings, type Solicitud,
 } from "./types";
 
 type Store = {
@@ -11,7 +11,8 @@ type Store = {
   citas: Cita[]; notas: Nota[]; planes: Plan[]; settings: Partial<SiteSettings>;
 };
 
-const g = globalThis as unknown as { __tanfipMem?: Store };
+const g = globalThis as unknown as { __tanfipMem?: Store; __tanfipArchivos?: Map<string, { archivo: Archivo; base64: string }> };
+const archivos = () => (g.__tanfipArchivos ??= new Map());
 
 function store(): Store {
   if (!g.__tanfipMem) {
@@ -98,6 +99,11 @@ export const memoryDb: Db = {
   async listPlanes(pid) { return clone(store().planes.filter((n) => !pid || n.pacienteId === pid)).sort((a, b) => b.inicio.localeCompare(a.inicio)); },
   async savePlan(p, actor) { return upsert(store().planes, p, actor); },
   async deletePlan(id) { const st = store(); st.planes = st.planes.filter((n) => n.id !== id); },
+
+  async listArchivos(pid) { return [...archivos().values()].map((x) => clone(x.archivo)).filter((a) => a.pacienteId === pid).sort((a, b) => b.creadoEn.localeCompare(a.creadoEn)); },
+  async saveArchivo(a, base64, actor) { const archivo: Archivo = { ...a, id: uid(), creadoEn: now(), creadoPor: actor }; archivos().set(archivo.id, { archivo, base64 }); return clone(archivo); },
+  async getArchivo(id) { const x = archivos().get(id); return x ? clone(x) : null; },
+  async deleteArchivo(id) { archivos().delete(id); },
 
   async getSettings() { return clone(store().settings); },
   async saveSettings(s) { store().settings = { ...store().settings, ...clone(s) }; },

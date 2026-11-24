@@ -2,9 +2,10 @@
 import Link from "next/link";
 import { useState } from "react";
 import { guardarNota } from "@/app/admin/actions";
-import type { Cita, Nota, Paciente, Plan, Servicio } from "@/lib/db/types";
+import type { Archivo, Cita, Nota, Paciente, Plan, Servicio } from "@/lib/db/types";
 import { colorEva, diaNum, fechaHora, iniciales, soloFecha, waLink } from "@/lib/admin/format";
 import { IconCalendar } from "@/components/Icons";
+import { ArchivosTab } from "./ArchivosTab";
 import { BodyMap } from "./BodyMap";
 import { CitaModal } from "./CitaModal";
 import { PlanModal, NotaModal } from "./FichaModals";
@@ -15,9 +16,9 @@ import { Estado, useAct, Vacio } from "./ui";
 type Tab = "resumen" | "evolucion" | "citas" | "plan" | "archivos";
 
 export function FichaView({
-  paciente, citas, notas, planes, servicios, pacientes, rol, hoy,
+  paciente, citas, notas, planes, archivos, servicios, pacientes, rol, hoy,
 }: {
-  paciente: Paciente; citas: Cita[]; notas: Nota[]; planes: Plan[]; servicios: Servicio[]; pacientes: { id: string; nombre: string }[]; rol: string; hoy: string;
+  paciente: Paciente; citas: Cita[]; notas: Nota[]; planes: Plan[]; archivos: Archivo[]; servicios: Servicio[]; pacientes: { id: string; nombre: string }[]; rol: string; hoy: string;
 }) {
   const prof = rol === "profesional";
   const [tab, setTab] = useState<Tab>("resumen");
@@ -31,7 +32,7 @@ export function FichaView({
     { id: "resumen", label: "Resumen" },
     ...(prof ? [{ id: "evolucion" as Tab, label: `Evolución (${notas.length})` }] : []),
     { id: "citas", label: `Citas (${citas.length})` },
-    ...(prof ? [{ id: "plan" as Tab, label: "Plan de tratamiento" }, { id: "archivos" as Tab, label: "Archivos" }] : []),
+    ...(prof ? [{ id: "plan" as Tab, label: "Plan de tratamiento" }, { id: "archivos" as Tab, label: `Archivos (${archivos.length})` }] : []),
   ];
 
   return (
@@ -70,11 +71,7 @@ export function FichaView({
         )}
         {tab === "citas" && <Citas citas={citas} nombreServ={nombreServ} onNueva={() => setCita({ abierto: true, cita: null })} onEditar={(c) => setCita({ abierto: true, cita: c })} />}
         {tab === "plan" && prof && <Planes planes={planes} onNuevo={() => setPlan({ abierto: true, plan: null })} onEditar={(p) => setPlan({ abierto: true, plan: p })} />}
-        {tab === "archivos" && prof && (
-          <div className="a-card">
-            <Vacio titulo="Archivos del paciente" texto="Aquí podrás adjuntar informes, estudios e imágenes. Se activará al conectar el almacenamiento seguro (Supabase Storage)." />
-          </div>
-        )}
+        {tab === "archivos" && prof && <ArchivosTab pacienteId={paciente.id} archivos={archivos} />}
       </div>
 
       <PacienteModal open={editar} onClose={() => setEditar(false)} paciente={paciente} servicios={servicios} rol={rol} />

@@ -14,12 +14,13 @@ export default async function FichaPage({ params }: { params: Promise<{ id: stri
   const paciente = await db.getPaciente(id);
   if (!paciente) notFound();
   const profesional = s.rol === "profesional";
-  const [citas, servicios, todos, notas, planes] = await Promise.all([
+  const [citas, servicios, todos, notas, planes, archivos] = await Promise.all([
     db.listCitas(),
     db.listServicios(),
     db.listPacientes(),
     profesional ? db.listNotas(id) : Promise.resolve([]),
     profesional ? db.listPlanes(id) : Promise.resolve([]),
+    profesional ? db.listArchivos(id) : Promise.resolve([]),
   ]);
   return (
     <FichaView
@@ -27,6 +28,7 @@ export default async function FichaPage({ params }: { params: Promise<{ id: stri
       citas={citas.filter((c) => c.pacienteId === id)}
       notas={notas}
       planes={planes}
+      archivos={archivos}
       servicios={servicios}
       pacientes={todos.map((p) => ({ id: p.id, nombre: p.nombre }))}
       rol={s.rol}
