@@ -5,6 +5,8 @@ import nextTs from "eslint-config-next/typescript";
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
+  // Reglas del React Compiler: advierten de patrones que funcionan bien aqui (ajustar estado al abrir modales, etc.).
+  { rules: { "react-hooks/set-state-in-effect": "warn", "react-hooks/static-components": "warn" } },
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:

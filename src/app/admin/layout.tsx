@@ -6,6 +6,7 @@ import "./admin.css";
 export const metadata: Metadata = {
   title: { default: "Panel", template: "%s · Panel TANFIP" },
   robots: { index: false, follow: false },
+  manifest: "/admin-manifest.webmanifest",
 };
 export const viewport: Viewport = { themeColor: "#1b7f8e", width: "device-width", initialScale: 1 };
 

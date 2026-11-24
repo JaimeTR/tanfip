@@ -1,3 +1,4 @@
+import { CopyField } from "@/components/admin/CopyField";
 import { requireSession } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
 import { waLink, diaLargo } from "@/lib/admin/format";
@@ -42,7 +43,7 @@ export default async function RecordatoriosPage() {
         {calUrl ? (
           <>
             <p className="mt-1 text-sm text-muted">Google Calendar → Otros calendarios → Desde URL (o suscripción en Apple/Outlook). Es privado: no lo compartas.</p>
-            <input readOnly value={calUrl} onFocus={(e) => e.currentTarget.select()} className="mt-3 w-full rounded-xl border border-teal/20 bg-white px-3 py-2 text-sm" aria-label="URL del calendario" />
+            <CopyField value={calUrl} label="URL del calendario" />
           </>
         ) : (
           <p className="mt-1 text-sm text-muted">Define <code>CALENDAR_TOKEN</code> (texto largo aleatorio) y <code>NEXT_PUBLIC_SITE_URL</code> en el servidor para activar el enlace.</p>
