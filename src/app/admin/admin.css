@@ -152,3 +152,13 @@ dialog.a-modal[open] .a-modal-box { animation: pop .28s cubic-bezier(.2,.9,.3,1.
   .side[data-colapsado="true"] .side-link .a-badge { position: absolute; top: .15rem; right: .15rem; }
   .side[data-colapsado="true"] .side-profile { justify-content: center; padding-inline: 0; }
 }
+
+/* Barra inferior (solo móvil): accesos principales del panel. */
+.bottom-nav { position: fixed; inset: auto 0 0 0; z-index: 35; display: grid; grid-template-columns: repeat(5, 1fr); padding: .35rem .25rem calc(.35rem + env(safe-area-inset-bottom)); border-radius: 1.25rem 1.25rem 0 0; background: rgb(255 255 255 / .94); }
+.bn-item { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .15rem; min-height: 3.4rem; border-radius: .9rem; font-size: .68rem; font-weight: 600; color: var(--muted); }
+.bn-item[aria-current="page"] { color: var(--teal-deep); background: rgb(27 127 142 / .12); }
+.bn-badge { position: absolute; top: .2rem; left: calc(50% + .45rem); }
+@media (max-width: 1023px) {
+  .adm-main { padding-bottom: calc(5.5rem + env(safe-area-inset-bottom)); }
+  .a-toasts { bottom: calc(4.8rem + env(safe-area-inset-bottom)); }
+}

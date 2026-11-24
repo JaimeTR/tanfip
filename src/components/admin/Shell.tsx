@@ -14,6 +14,13 @@ type Props = {
   children: ReactNode;
 };
 
+const PRINCIPALES = [
+  { href: "/admin", label: "Inicio", Icon: IconHome, exact: true },
+  { href: "/admin/solicitudes", label: "Solicitudes", Icon: IconInbox },
+  { href: "/admin/citas", label: "Citas", Icon: IconCalendar },
+  { href: "/admin/pacientes", label: "Pacientes", Icon: IconUsers },
+];
+
 const NAV = [
   { href: "/admin", label: "Inicio", Icon: IconHome, exact: true },
   { href: "/admin/solicitudes", label: "Solicitudes", Icon: IconInbox },
@@ -121,6 +128,22 @@ export function AdminShell({ user, nuevas, children }: Props) {
             {children}
           </main>
         </div>
+        <nav aria-label="Acceso rápido" className="glass bottom-nav lg:hidden">
+          {PRINCIPALES.map(({ href, label, Icon, exact }) => {
+            const activo = exact ? pathname === href : pathname.startsWith(href);
+            return (
+              <Link key={href} href={href} className="bn-item" aria-current={activo ? "page" : undefined}>
+                <Icon className="size-6" />
+                <span>{label}</span>
+                {href === "/admin/solicitudes" && nuevas > 0 && <span className="a-badge bn-badge" aria-label={`${nuevas} nuevas`}>{nuevas}</span>}
+              </Link>
+            );
+          })}
+          <button type="button" className="bn-item" onClick={() => setMenu((v) => !v)} aria-expanded={menu} aria-controls="menu-lateral">
+            <IconMenu className="size-6" />
+            <span>Más</span>
+          </button>
+        </nav>
       </div>
 
     </UiProvider>
