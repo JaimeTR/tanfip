@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import type { Paciente, Servicio } from "@/lib/db/types";
-import { diaCorto, iniciales, norm } from "@/lib/admin/format";
+import { diaCorto, formatoTelefono, iniciales, norm } from "@/lib/admin/format";
 import { IconChevronLeft, IconChevronRight, IconEdit, IconPlus, IconSearch, IconSortDown, IconSortUp } from "./icons";
 import { PacienteModal } from "./PacienteModal";
 import { Estado, Vacio } from "./ui";
@@ -113,7 +113,7 @@ export function PacientesView({
                     </td>
                     <td className="hidden sm:table-cell">{p.edad ?? "—"}</td>
                     <td className="hidden md:table-cell">{nombreServ(p.servicio)}</td>
-                    <td className="hidden text-sm lg:table-cell">{p.telefono || "—"}</td>
+                    <td className="hidden text-sm lg:table-cell">{p.telefono ? formatoTelefono(p.telefono) : "—"}</td>
                     <td className="hidden whitespace-nowrap text-sm sm:table-cell">{proxima[p.id] ? `${diaCorto(proxima[p.id].slice(0, 10))} · ${proxima[p.id].slice(11)}` : <span className="text-muted">—</span>}</td>
                     <td><Estado valor={p.estado} /></td>
                     <td className="text-right">

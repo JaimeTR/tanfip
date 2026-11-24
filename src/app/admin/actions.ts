@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { supabaseConfigured } from "@/lib/supabase/config";
 import { createUserClient } from "@/lib/supabase/server";
 import { authorize } from "@/lib/auth/session";
+import { normalizarTelefono } from "@/lib/phone";
 import { hashClave } from "@/lib/auth/password";
 import type { Session } from "@/lib/auth/token";
 import { getDb } from "@/lib/db";
@@ -14,7 +15,7 @@ import { enviarCorreo, MENSAJES_CORREO } from "@/lib/email";
 import { diaLargo } from "@/lib/admin/format";
 import { ConflictError, type Cita, type Db, type EstadoCita, type Rol } from "@/lib/db/types";
 import {
-  parseBloqueo, parseCita, parsePago, parseEstadoCita, parseFecha, parseHora, parseHorarios, parseId, parseNota, parsePaciente, parsePlan,
+  parseAjustes, parseBloqueo, parseCita, parsePago, parseEstadoCita, parseFecha, parseHora, parseHorarios, parseId, parseNota, parsePaciente, parsePlan,
   parseServicio, parseSettings, str, ValidationError,
 } from "@/lib/db/validate";
 
@@ -150,7 +151,7 @@ export async function eliminarPlan(id: unknown) {
 }
 
 // ---------- solicitudes ----------
-const soloDigitos = (t: string) => t.replace(/\D/g, "");
+const soloDigitos = (t: string) => normalizarTelefono(t).replace(/\D/g, "");
 
 export async function aceptarSolicitud(raw: unknown) {
   return run(AMBOS, async (s, db) => {
@@ -354,5 +355,13 @@ export async function eliminarPago(id: unknown) {
     const pid = parseId(id);
     await db.deletePago(pid, s.id);
     await db.audit(s.id, "eliminar", "pago", pid);
+  });
+}
+
+// ---------- configuración del panel (solo profesional) ----------
+export async function guardarAjustes(raw: unknown) {
+  return run(SOLO_PROF, async (s, db) => {
+    await db.saveSettings(parseAjustes(raw), s.id);
+    await db.audit(s.id, "guardar", "ajustes");
   });
 }

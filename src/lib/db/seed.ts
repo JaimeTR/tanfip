@@ -53,18 +53,18 @@ export function crearSemilla() {
   });
 
   const pacientes: Paciente[] = [
-    pac({ nombre: "María Fernanda Salazar", edad: 34, telefono: "0991234567", correo: "mafe.salazar@correo.com", direccion: "Cumbayá, Quito", servicio: "fisioterapia", motivoConsulta: "Dolor", patologia: "Lumbalgia mecánica", zonas: ["Espalda baja / Lumbar", "Cadera"], antecedentes: "Trabajo de oficina, 9 h sentada.", medicamentos: "Ibuprofeno ocasional" }, 70),
-    pac({ nombre: "Carlos Andrés Mendoza", edad: 47, telefono: "0987654321", servicio: "fisioterapia", motivoConsulta: "Lesión deportiva", patologia: "Esguince de tobillo grado II", zonas: ["Pierna / Tobillo", "Pie"], desde: "Entre 1 y 4 semanas" }, 40),
-    pac({ nombre: "Lucía Paredes", edad: 29, telefono: "0998877665", correo: "lucia.paredes@correo.com", servicio: "pilates", motivoConsulta: "Mejorar postura", patologia: "Sin diagnóstico", zonas: ["Espalda alta", "Cuello"], desde: "Menos de una semana" }, 55),
-    pac({ nombre: "Jorge Luis Cevallos", edad: 61, telefono: "0976543210", servicio: "fisioterapia", motivoConsulta: "Rehabilitación", patologia: "Post-operatorio de rodilla (prótesis)", zonas: ["Muslo / Rodilla"], antecedentes: "Hipertensión.", medicamentos: "Losartán 50 mg" }, 90),
-    pac({ nombre: "Andrea Villamar", edad: 38, telefono: "0965432109", correo: "andrea.v@correo.com", servicio: "pilates", motivoConsulta: "Control de dolor", patologia: "Hernia discal L4-L5", zonas: ["Espalda baja / Lumbar"], desde: "Más de 6 meses" }, 120),
-    pac({ nombre: "Diego Armando Torres", edad: 25, telefono: "0954321098", servicio: "fisioterapia", motivoConsulta: "Lesión deportiva", patologia: "Tendinopatía de hombro", zonas: ["Hombro", "Brazo / Codo"], desde: "Entre 1 y 4 semanas" }, 21),
-    pac({ nombre: "Patricia Aldaz", edad: 52, telefono: "0943210987", servicio: "pilates", motivoConsulta: "Bienestar general", patologia: "Osteopenia", zonas: [], medicamentos: "Calcio + vitamina D" }, 200),
-    pac({ nombre: "Santiago Rivas", edad: 42, telefono: "0932109876", servicio: "fisioterapia", motivoConsulta: "Dolor", patologia: "Cervicalgia tensional", zonas: ["Cuello", "Hombro"], desde: "Entre 1 y 6 meses" }, 15),
-    pac({ nombre: "Valentina Ortiz", edad: 31, telefono: "0921098765", servicio: "pilates", motivoConsulta: "Embarazo / posparto", patologia: "Diástasis abdominal", zonas: ["Espalda baja / Lumbar"], desde: "Entre 1 y 6 meses" }, 9),
-    pac({ nombre: "Roberto Játiva", edad: 67, telefono: "0910987654", servicio: "fisioterapia", motivoConsulta: "Rehabilitación", patologia: "Artrosis de cadera", zonas: ["Cadera", "Muslo / Rodilla"], estado: "alta" }, 160),
-    pac({ nombre: "Camila Espinosa", edad: 22, telefono: "0999988776", servicio: "pilates", motivoConsulta: "Mejorar postura", patologia: "Escoliosis leve", zonas: ["Espalda alta", "Espalda baja / Lumbar"] }, 4),
-    pac({ nombre: "Henry Zambrano", edad: 49, telefono: "0988877665", servicio: "fisioterapia", motivoConsulta: "Dolor", patologia: "Síndrome del túnel carpiano", zonas: ["Muñeca / Mano"], estado: "inactivo" }, 240),
+    pac({ nombre: "María Fernanda Salazar", edad: 34, telefono: "991234567", correo: "mafe.salazar@correo.com", direccion: "Cumbayá, Quito", servicio: "fisioterapia", motivoConsulta: "Dolor", patologia: "Lumbalgia mecánica", zonas: ["Espalda baja / Lumbar", "Cadera"], antecedentes: "Trabajo de oficina, 9 h sentada.", medicamentos: "Ibuprofeno ocasional" }, 70),
+    pac({ nombre: "Carlos Andrés Mendoza", edad: 47, telefono: "987654321", servicio: "fisioterapia", motivoConsulta: "Lesión deportiva", patologia: "Esguince de tobillo grado II", zonas: ["Pierna / Tobillo", "Pie"], desde: "Entre 1 y 4 semanas" }, 40),
+    pac({ nombre: "Lucía Paredes", edad: 29, telefono: "998877665", correo: "lucia.paredes@correo.com", servicio: "pilates", motivoConsulta: "Mejorar postura", patologia: "Sin diagnóstico", zonas: ["Espalda alta", "Cuello"], desde: "Menos de una semana" }, 55),
+    pac({ nombre: "Jorge Luis Cevallos", edad: 61, telefono: "976543210", servicio: "fisioterapia", motivoConsulta: "Rehabilitación", patologia: "Post-operatorio de rodilla (prótesis)", zonas: ["Muslo / Rodilla"], antecedentes: "Hipertensión.", medicamentos: "Losartán 50 mg" }, 90),
+    pac({ nombre: "Andrea Villamar", edad: 38, telefono: "965432109", correo: "andrea.v@correo.com", servicio: "pilates", motivoConsulta: "Control de dolor", patologia: "Hernia discal L4-L5", zonas: ["Espalda baja / Lumbar"], desde: "Más de 6 meses" }, 120),
+    pac({ nombre: "Diego Armando Torres", edad: 25, telefono: "954321098", servicio: "fisioterapia", motivoConsulta: "Lesión deportiva", patologia: "Tendinopatía de hombro", zonas: ["Hombro", "Brazo / Codo"], desde: "Entre 1 y 4 semanas" }, 21),
+    pac({ nombre: "Patricia Aldaz", edad: 52, telefono: "943210987", servicio: "pilates", motivoConsulta: "Bienestar general", patologia: "Osteopenia", zonas: [], medicamentos: "Calcio + vitamina D" }, 200),
+    pac({ nombre: "Santiago Rivas", edad: 42, telefono: "932109876", servicio: "fisioterapia", motivoConsulta: "Dolor", patologia: "Cervicalgia tensional", zonas: ["Cuello", "Hombro"], desde: "Entre 1 y 6 meses" }, 15),
+    pac({ nombre: "Valentina Ortiz", edad: 31, telefono: "921098765", servicio: "pilates", motivoConsulta: "Embarazo / posparto", patologia: "Diástasis abdominal", zonas: ["Espalda baja / Lumbar"], desde: "Entre 1 y 6 meses" }, 9),
+    pac({ nombre: "Roberto Játiva", edad: 67, telefono: "910987654", servicio: "fisioterapia", motivoConsulta: "Rehabilitación", patologia: "Artrosis de cadera", zonas: ["Cadera", "Muslo / Rodilla"], estado: "alta" }, 160),
+    pac({ nombre: "Camila Espinosa", edad: 22, telefono: "999988776", servicio: "pilates", motivoConsulta: "Mejorar postura", patologia: "Escoliosis leve", zonas: ["Espalda alta", "Espalda baja / Lumbar"] }, 4),
+    pac({ nombre: "Henry Zambrano", edad: 49, telefono: "988877665", servicio: "fisioterapia", motivoConsulta: "Dolor", patologia: "Síndrome del túnel carpiano", zonas: ["Muñeca / Mano"], estado: "inactivo" }, 240),
   ];
 
   const durs: Record<string, number> = { fisioterapia: 60, pilates: 50, personalizado: 60 };
@@ -123,16 +123,16 @@ export function crearSemilla() {
 
   const sol = (s: Partial<Solicitud> & Pick<Solicitud, "nombre" | "servicio" | "fecha" | "hora">, horasAtras: number): Solicitud => ({
     id: id("sol"), creadaEn: new Date(Date.now() - horasAtras * 3600e3).toISOString(), estado: "nueva", paciente: "nuevo", edad: 30,
-    telefono: "0990000000", correo: "", motivoConsulta: "Dolor", patologia: "", zonas: [], desde: "Entre 1 y 4 semanas", antecedentes: "",
+    telefono: "990000000", correo: "", motivoConsulta: "Dolor", patologia: "", zonas: [], desde: "Entre 1 y 4 semanas", antecedentes: "",
     medicamentos: "", direccion: "", adicional: "", consentimiento: true, consentimientoAt: new Date(Date.now() - horasAtras * 3600e3).toISOString(),
     propuestaFecha: "", propuestaHora: "", motivoRechazo: "", pacienteId: "", citaId: "", ...s,
   });
   const solicitudes: Solicitud[] = [
-    sol({ nombre: "Gabriela Montenegro", servicio: "fisioterapia", fecha: addDays(hoy, 2), hora: "11:00", edad: 36, telefono: "0995551122", correo: "gabi.montenegro@correo.com", motivoConsulta: "Dolor", patologia: "Dolor de hombro derecho al levantar el brazo", zonas: ["Hombro", "Cuello"], desde: "Entre 1 y 6 meses", antecedentes: "Cirugía de vesícula (2019).", medicamentos: "Ninguno", direccion: "La Floresta, Quito", adicional: "Prefiero horarios de la mañana." }, 2),
-    sol({ nombre: "Esteban Cárdenas", servicio: "pilates", fecha: addDays(hoy, 3), hora: "17:00", edad: 28, telefono: "0994443322", motivoConsulta: "Mejorar postura", zonas: ["Espalda alta"], desde: "Más de 6 meses", paciente: "nuevo" }, 5),
-    sol({ nombre: "Rosa Elena Quishpe", servicio: "fisioterapia", fecha: addDays(hoy, 1), hora: "09:00", edad: 58, telefono: "0993332211", motivoConsulta: "Rehabilitación", patologia: "Fractura de muñeca (yeso retirado hace 1 semana)", zonas: ["Muñeca / Mano"], paciente: "nuevo", medicamentos: "Calcio" }, 20),
-    sol({ nombre: "Marcos Tapia", servicio: "fisioterapia", fecha: addDays(hoy, -2), hora: "10:00", edad: 44, telefono: "0992221100", estado: "rechazada", motivoRechazo: "Fuera de horario de atención." }, 90),
-    sol({ nombre: "Lucía Paredes", servicio: "pilates", fecha: addDays(hoy, -9), hora: "08:00", edad: 29, telefono: "0998877665", estado: "aceptada", pacienteId: pacientes[2].id }, 240),
+    sol({ nombre: "Gabriela Montenegro", servicio: "fisioterapia", fecha: addDays(hoy, 2), hora: "11:00", edad: 36, telefono: "995551122", correo: "gabi.montenegro@correo.com", motivoConsulta: "Dolor", patologia: "Dolor de hombro derecho al levantar el brazo", zonas: ["Hombro", "Cuello"], desde: "Entre 1 y 6 meses", antecedentes: "Cirugía de vesícula (2019).", medicamentos: "Ninguno", direccion: "La Floresta, Quito", adicional: "Prefiero horarios de la mañana." }, 2),
+    sol({ nombre: "Esteban Cárdenas", servicio: "pilates", fecha: addDays(hoy, 3), hora: "17:00", edad: 28, telefono: "994443322", motivoConsulta: "Mejorar postura", zonas: ["Espalda alta"], desde: "Más de 6 meses", paciente: "nuevo" }, 5),
+    sol({ nombre: "Rosa Elena Quishpe", servicio: "fisioterapia", fecha: addDays(hoy, 1), hora: "09:00", edad: 58, telefono: "993332211", motivoConsulta: "Rehabilitación", patologia: "Fractura de muñeca (yeso retirado hace 1 semana)", zonas: ["Muñeca / Mano"], paciente: "nuevo", medicamentos: "Calcio" }, 20),
+    sol({ nombre: "Marcos Tapia", servicio: "fisioterapia", fecha: addDays(hoy, -2), hora: "10:00", edad: 44, telefono: "992221100", estado: "rechazada", motivoRechazo: "Fuera de horario de atención." }, 90),
+    sol({ nombre: "Lucía Paredes", servicio: "pilates", fecha: addDays(hoy, -9), hora: "08:00", edad: 29, telefono: "998877665", estado: "aceptada", pacienteId: pacientes[2].id }, 240),
   ];
 
   const bloqueos: Bloqueo[] = [{ id: id("blq"), desde: addDays(hoy, 21), hasta: addDays(hoy, 23), motivo: "Congreso de fisioterapia" }];

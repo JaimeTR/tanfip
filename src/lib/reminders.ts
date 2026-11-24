@@ -6,13 +6,21 @@ import { diaLargo } from "@/lib/admin/format";
 
 export type Recordatorio = { cita: Cita; paciente: Paciente; servicio: string; texto: string };
 
-export const textoRecordatorio = (nombre: string, servicio: string, fecha: string, hora: string) =>
-  `Hola ${nombre}, te recordamos tu cita de ${servicio} el ${diaLargo(fecha)} a las ${hora}. Responde este mensaje para confirmar o si necesitas cambiarla.\n\nTania Castro · TANFIP`;
+export const PLANTILLA_DEFAULT =
+  "Hola {nombre}, te recordamos tu cita de {servicio} el {fecha} a las {hora}. Responde este mensaje para confirmar o si necesitas cambiarla.\n\nTania Castro · TANFIP";
+
+/** Variables: {nombre} {servicio} {fecha} {hora}. */
+export const textoRecordatorio = (nombre: string, servicio: string, fecha: string, hora: string, plantilla = "") =>
+  (plantilla.trim() || PLANTILLA_DEFAULT)
+    .replaceAll("{nombre}", nombre)
+    .replaceAll("{servicio}", servicio)
+    .replaceAll("{fecha}", diaLargo(fecha))
+    .replaceAll("{hora}", hora);
 
 /** Citas pendientes/confirmadas de mañana, con su paciente. */
 export async function recordatoriosDeManana(db: Db): Promise<Recordatorio[]> {
   const fecha = addDays(todayISO(), 1);
-  const [citas, pacientes, servicios] = await Promise.all([db.listCitas(), db.listPacientes(), db.listServicios()]);
+  const [citas, pacientes, servicios, ajustes] = await Promise.all([db.listCitas(), db.listPacientes(), db.listServicios(), db.getSettings()]);
   const pac = new Map(pacientes.map((p) => [p.id, p]));
   const srv = new Map(servicios.map((s) => [s.id, s.nombre]));
   return citas
@@ -22,7 +30,7 @@ export async function recordatoriosDeManana(db: Db): Promise<Recordatorio[]> {
       const paciente = pac.get(cita.pacienteId);
       if (!paciente) return [];
       const servicio = srv.get(cita.servicio) ?? cita.servicio;
-      return [{ cita, paciente, servicio, texto: textoRecordatorio(paciente.nombre.split(" ")[0], servicio, cita.fecha, cita.hora) }];
+      return [{ cita, paciente, servicio, texto: textoRecordatorio(paciente.nombre.split(" ")[0], servicio, cita.fecha, cita.hora, ajustes.recordatorioPlantilla) }];
     });
 }
 

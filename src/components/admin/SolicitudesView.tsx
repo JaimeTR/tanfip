@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { aceptarSolicitud, horasDisponibles, proponerHora, rechazarSolicitud } from "@/app/admin/actions";
 import type { Servicio, Solicitud } from "@/lib/db/types";
-import { diaCorto, diaLargo, fechaHora, norm, waLink } from "@/lib/admin/format";
+import { diaCorto, diaLargo, fechaHora, formatoTelefono, norm, waLink } from "@/lib/admin/format";
 import { IconCheck } from "@/components/Icons";
 import { IconClose, IconEye, IconRefresh, IconSearch, IconWhatsapp } from "./icons";
 import { Campo, Estado, Modal, useAct, useUi, Vacio } from "./ui";
@@ -24,7 +24,7 @@ export function SolicitudesView({ solicitudes, servicios, rol, abrirId }: { soli
 
   const lista = useMemo(() => {
     const n = norm(q.trim());
-    return solicitudes.filter((s) => (filtro === "todas" || s.estado === filtro) && (!n || norm(s.nombre).includes(n) || s.telefono.includes(n)));
+    return solicitudes.filter((s) => (filtro === "todas" || s.estado === filtro) && (!n || norm(s.nombre).includes(n) || s.telefono.replace(/\D/g, "").includes(n.replace(/\D/g, "").replace(/^0+/, "") || "\u0000")));
   }, [solicitudes, filtro, q]);
 
   const cuenta = (id: string) => (id === "todas" ? solicitudes.length : solicitudes.filter((s) => s.estado === id).length);
@@ -245,7 +245,7 @@ Con gusto te ayudo a buscar otra opción.`;
           <p className="rounded-xl bg-[#e1f3e6] p-3 text-sm text-[#25683a]">
             {aviso.tipo === "aceptada" ? "Solicitud aprobada. Se creó el paciente y la cita." : aviso.tipo === "reprogramada" ? "Propuesta de nuevo horario registrada." : "Solicitud rechazada."} {aviso.correo}
           </p>
-          <Campo label={`Mensaje para ${sol.nombre} (${sol.telefono}) — puedes editarlo`} htmlFor="aviso-msg">
+          <Campo label={`Mensaje para ${sol.nombre} (${formatoTelefono(sol.telefono)}) — puedes editarlo`} htmlFor="aviso-msg">
             <textarea id="aviso-msg" className="field" rows={8} value={aviso.msg} onChange={(e) => setAviso({ ...aviso, msg: e.target.value })} />
           </Campo>
           <p className="a-hint">Al pulsar el botón se abre el WhatsApp del paciente con este mensaje ya escrito; solo falta presionar enviar.</p>
@@ -267,7 +267,7 @@ Con gusto te ayudo a buscar otra opción.`;
             </p>
           )}
           <dl className="grid gap-4 sm:grid-cols-2">
-            <Dato k="Teléfono" v={sol.telefono} />
+            <Dato k="Teléfono" v={formatoTelefono(sol.telefono)} />
             <Dato k="Correo" v={sol.correo} />
             <Dato k="Edad" v={`${sol.edad} años`} />
             <Dato k="Tipo" v={sol.paciente === "nuevo" ? "Paciente nuevo" : "Ya es paciente"} />

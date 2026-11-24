@@ -190,6 +190,9 @@ export type SiteSettings = {
   horarios: string;
   instagram: string;
   faqs: { q: string; a: string }[];
+  /** Ajustes del panel (opcionales): correo automático de recordatorio y su texto. */
+  recordatorioActivo?: boolean;
+  recordatorioPlantilla?: string;
 };
 
 export type Db = {

@@ -1,4 +1,5 @@
 // Validación y saneamiento en el servidor de todo lo que llega desde el navegador o la landing.
+import { normalizarTelefono } from "../phone";
 import { isHHMM, isISODate } from "./dates";
 import { METODOS_PAGO } from "./types";
 import type { CitaInput, EstadoCita, EstadoPaciente, EstadoPlan, Horario, NotaInput, NuevaSolicitud, PacienteInput, PlanInput, Servicio, SiteSettings } from "./types";
@@ -41,7 +42,7 @@ export const parseEstadoCita = (v: unknown) => oneOf(v, ESTADOS_CITA, "Estado in
 export function parseSolicitudPublica(raw: unknown): NuevaSolicitud {
   const b = obj(raw);
   const edad = Number(b.edad);
-  const telefono = str(b.telefono, 30);
+  const telefono = normalizarTelefono(str(b.telefono, 30));
   if (telefono.replace(/\D/g, "").length < 7) bad("Teléfono inválido");
   if (b.consentimiento !== true) bad("Falta el consentimiento");
   const nombre = str(b.nombre, 120);
@@ -76,7 +77,7 @@ export function parsePaciente(raw: unknown): PacienteInput {
     id: id(b.id) || undefined,
     nombre: nombre.length >= 3 ? nombre : bad("Escribe el nombre completo"),
     edad,
-    telefono: str(b.telefono, 30),
+    telefono: normalizarTelefono(str(b.telefono, 30)),
     correo: str(b.correo, 160),
     direccion: str(b.direccion, 200),
     servicio: str(b.servicio, 40),
@@ -193,6 +194,13 @@ export function parseBloqueo(raw: unknown) {
   const hasta = fecha(b.hasta, "Fecha de fin inválida");
   if (hasta < desde) bad("La fecha final no puede ser anterior a la inicial");
   return { desde, hasta, motivo: str(b.motivo, 120) };
+}
+
+export function parseAjustes(raw: unknown): Pick<SiteSettings, "recordatorioActivo" | "recordatorioPlantilla"> {
+  const b = obj(raw);
+  const plantilla = str(b.recordatorioPlantilla, 800);
+  if (plantilla && !plantilla.includes("{hora}")) bad("El mensaje debe incluir {hora} para que el paciente sepa a qué hora es.");
+  return { recordatorioActivo: b.recordatorioActivo !== false, recordatorioPlantilla: plantilla };
 }
 
 export function parseSettings(raw: unknown): Partial<SiteSettings> {

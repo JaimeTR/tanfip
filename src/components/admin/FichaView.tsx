@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { guardarNota } from "@/app/admin/actions";
 import type { Archivo, Cita, Nota, Paciente, Plan, Servicio } from "@/lib/db/types";
-import { colorEva, diaNum, fechaHora, iniciales, soloFecha, waLink } from "@/lib/admin/format";
+import { colorEva, diaNum, fechaHora, formatoTelefono, iniciales, soloFecha, waLink } from "@/lib/admin/format";
 import { IconCalendar } from "@/components/Icons";
 import { ArchivosTab } from "./ArchivosTab";
 import { BodyMap } from "./BodyMap";
@@ -47,7 +47,7 @@ export function FichaView({
             <Estado valor={paciente.estado} />
             {paciente.edad != null && <span>{paciente.edad} años</span>}
             <span>{nombreServ(paciente.servicio)}</span>
-            {paciente.telefono && <span>{paciente.telefono}</span>}
+            {paciente.telefono && <span>{formatoTelefono(paciente.telefono)}</span>}
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -113,7 +113,7 @@ function Resumen({ paciente: p, notas, prof, nombreServ, onNota }: { paciente: P
       <section className="a-card a-card-pad">
         <h2 className="mb-4 font-display text-lg font-semibold text-teal-deep">Datos personales</h2>
         <dl className="grid gap-4 sm:grid-cols-2">
-          <Dato k="Teléfono" v={p.telefono} />
+          <Dato k="Teléfono" v={p.telefono ? formatoTelefono(p.telefono) : ""} />
           <Dato k="Correo" v={p.correo} />
           <Dato k="Residencia" v={p.direccion} />
           <Dato k="Servicio principal" v={nombreServ(p.servicio)} />

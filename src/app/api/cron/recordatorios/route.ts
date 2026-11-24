@@ -13,6 +13,7 @@ export async function GET(req: Request) {
   const db = getPublicDb();
   if (!db) return Response.json({ ok: false, error: "Servicio no disponible" }, { status: 503 });
 
+  if ((await db.getSettings()).recordatorioActivo === false) return Response.json({ ok: true, omitido: "desactivado en Configuración" });
   const lista = await recordatoriosDeManana(db);
   const res = { enviados: 0, sinCorreo: 0, errores: 0 };
   for (const r of lista) {

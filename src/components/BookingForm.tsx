@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { GRACIAS_KEY } from "./GraciasView";
 import { services, site } from "@/lib/site";
+import { formatoTelefono, limpiarTelefonoInput } from "@/lib/phone";
 import {
   IconArrow,
   IconArrowLeft,
@@ -470,7 +471,7 @@ export function BookingForm() {
                         inputMode="tel"
                         autoComplete="tel"
                         value={d.telefono}
-                        onChange={(e) => set("telefono", e.target.value)}
+                        onChange={(e) => set("telefono", limpiarTelefonoInput(e.target.value))}
                         placeholder="Ej. 949 809 459"
                         required
                         aria-invalid={d.telefono !== "" && !phoneOk}
@@ -656,7 +657,7 @@ export function BookingForm() {
                   <div className="grid gap-3 sm:grid-cols-2">
                     <Card Icon={IconClipboard} k="Servicio" v={`${service.title} · ${d.paciente === "nuevo" ? "primera vez" : "paciente"}`} />
                     <Card Icon={IconCalendar} k="Fecha y hora" v={`${cap(day?.label ?? d.fecha)} · ${d.hora}`} />
-                    <Card Icon={IconUser} k="Paciente" v={`${d.nombre} · ${d.edad} años`} sub={`${d.telefono}${d.correo ? ` · ${d.correo}` : ""}`} />
+                    <Card Icon={IconUser} k="Paciente" v={`${d.nombre} · ${d.edad} años`} sub={`${formatoTelefono(d.telefono)}${d.correo ? ` · ${d.correo}` : ""}`} />
                     <Card Icon={IconHeart} k="Motivo" v={d.motivoConsulta} sub={[d.patologia, d.desde].filter(Boolean).join(" · ")} />
                     {d.zonas.length > 0 && <Card Icon={IconShield} k="Zonas" v={d.zonas.join(", ")} wide />}
                     {d.antecedentes && <Card Icon={IconClipboard} k="Antecedentes" v={d.antecedentes} wide />}

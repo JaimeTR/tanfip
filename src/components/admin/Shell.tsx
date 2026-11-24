@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import { cerrarSesion } from "@/app/admin/login/actions";
 import { IconCalendar } from "@/components/Icons";
-import { IconBell, IconChevronLeft, IconWallet, IconChevronRight, IconGlobe, IconHome, IconInbox, IconLogout, IconMenu, IconSliders, IconUser2, IconUsers } from "./icons";
+import { IconBell, IconChevronLeft, IconSettings, IconWallet, IconChevronRight, IconGlobe, IconHome, IconInbox, IconLogout, IconMenu, IconSliders, IconUser2, IconUsers } from "./icons";
 import { UiProvider } from "./ui";
 
 type Props = {
@@ -21,16 +21,25 @@ const PRINCIPALES = [
   { href: "/admin/pacientes", label: "Pacientes", Icon: IconUsers },
 ];
 
-const NAV = [
-  { href: "/admin", label: "Inicio", Icon: IconHome, exact: true },
-  { href: "/admin/solicitudes", label: "Solicitudes", Icon: IconInbox },
-  { href: "/admin/pacientes", label: "Pacientes", Icon: IconUsers },
-  { href: "/admin/citas", label: "Citas", Icon: IconCalendar },
-  { href: "/admin/pagos", label: "Pagos", Icon: IconWallet },
-  { href: "/admin/recordatorios", label: "Recordatorios", Icon: IconBell },
-  { href: "/admin/servicios", label: "Servicios y horarios", Icon: IconSliders },
-  { href: "/admin/sitio", label: "Sitio web", Icon: IconGlobe, soloProfesional: true },
-  { href: "/admin/usuarios", label: "Usuarios", Icon: IconUsers, soloProfesional: true },
+type Item = { href: string; label: string; Icon: typeof IconHome; exact?: boolean; soloProfesional?: boolean };
+const GRUPOS: { titulo: string; items: Item[] }[] = [
+  { titulo: "Atención", items: PRINCIPALES },
+  {
+    titulo: "Gestión",
+    items: [
+      { href: "/admin/pagos", label: "Pagos", Icon: IconWallet },
+      { href: "/admin/recordatorios", label: "Recordatorios", Icon: IconBell },
+    ],
+  },
+  {
+    titulo: "Ajustes",
+    items: [
+      { href: "/admin/servicios", label: "Servicios y horarios", Icon: IconSliders },
+      { href: "/admin/sitio", label: "Sitio web", Icon: IconGlobe, soloProfesional: true },
+      { href: "/admin/usuarios", label: "Usuarios", Icon: IconUsers, soloProfesional: true },
+      { href: "/admin/configuracion", label: "Configuración", Icon: IconSettings, soloProfesional: true },
+    ],
+  },
 ];
 
 export function AdminShell({ user, nuevas, children }: Props) {
@@ -58,33 +67,26 @@ export function AdminShell({ user, nuevas, children }: Props) {
     });
 
   useEffect(() => setMenu(false), [pathname]);
-  const items = NAV.filter((n) => !n.soloProfesional || user.rol === "profesional");
-
-  const link = (href: string, label: string, Icon: typeof IconHome, activo: boolean, extra?: ReactNode) => (
-    <Link key={href} href={href} className="side-link" title={label} aria-current={activo ? "page" : undefined}>
-      <Icon className="size-5 shrink-0" />
-      <span>{label}</span>
-      {extra}
-    </Link>
-  );
+  const grupos = GRUPOS.map((g) => ({ ...g, items: g.items.filter((n) => !n.soloProfesional || user.rol === "profesional") })).filter((g) => g.items.length);
 
   const nav = (
     <nav aria-label="Principal" className="flex flex-col gap-1">
-      {items.map(({ href, label, Icon, exact }) => {
-        const activo = exact ? pathname === href : pathname.startsWith(href);
-        return (
-          <Link key={href} href={href} className="side-link" title={label} aria-current={activo ? "page" : undefined}>
-            <Icon className="size-5 shrink-0" />
-            <span>{label}</span>
-            {href === "/admin/solicitudes" && nuevas > 0 && <span className="a-badge" aria-label={`${nuevas} nuevas`}>{nuevas}</span>}
-          </Link>
-        );
-      })}
-      <p className="side-hide mt-4 px-3.5 text-[0.7rem] font-semibold uppercase tracking-widest text-muted">Cuenta</p>
-      <div className="side-group mt-4 flex flex-col gap-1">
-        {link("/admin/perfil", "Mi perfil", IconUser2, pathname === "/admin/perfil")}
-        {link("/admin/perfil#seguridad", "Configuración", IconSliders, false)}
-      </div>
+      {grupos.map((g, gi) => (
+        <div key={g.titulo} className="flex flex-col gap-1">
+          <p className={`side-hide px-3.5 text-[0.7rem] font-semibold uppercase tracking-widest text-muted ${gi ? "mt-4" : ""}`}>{g.titulo}</p>
+          {gi > 0 && <hr className="side-group mt-3 border-teal/10" aria-hidden="true" />}
+          {g.items.map(({ href, label, Icon, exact }) => {
+            const activo = exact ? pathname === href : pathname.startsWith(href);
+            return (
+              <Link key={href} href={href} className="side-link" title={label} aria-current={activo ? "page" : undefined}>
+                <Icon className="size-5 shrink-0" />
+                <span>{label}</span>
+                {href === "/admin/solicitudes" && nuevas > 0 && <span className="a-badge" aria-label={`${nuevas} nuevas`}>{nuevas}</span>}
+              </Link>
+            );
+          })}
+        </div>
+      ))}
     </nav>
   );
 

@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { eliminarPaciente, guardarPaciente } from "@/app/admin/actions";
 import type { Paciente, Servicio } from "@/lib/db/types";
 import { soloFecha } from "@/lib/admin/format";
+import { limpiarTelefonoInput } from "@/lib/phone";
 import { BodyMap } from "./BodyMap";
 import { IconTrash } from "./icons";
 import { Campo, Modal, useAct, useUi } from "./ui";
@@ -83,7 +84,7 @@ export function PacienteModal({
             <input id="p-nombre" className="field field-sm" value={d.nombre} onChange={(e) => set("nombre", e.target.value)} maxLength={120} autoComplete="off" aria-invalid={!!error && d.nombre.trim().length < 3} />
           </Campo>
           <Campo label="Edad" htmlFor="p-edad"><input id="p-edad" type="number" min={0} max={120} className="field field-sm" value={d.edad} onChange={(e) => set("edad", e.target.value)} /></Campo>
-          <Campo label="Teléfono / WhatsApp" htmlFor="p-tel"><input id="p-tel" type="tel" className="field field-sm" value={d.telefono} onChange={(e) => set("telefono", e.target.value)} maxLength={30} /></Campo>
+          <Campo label="Teléfono / WhatsApp" htmlFor="p-tel"><input id="p-tel" type="tel" className="field field-sm" value={d.telefono} onChange={(e) => set("telefono", limpiarTelefonoInput(e.target.value))} maxLength={30} placeholder="949 809 459" /></Campo>
           <Campo label="Correo" htmlFor="p-correo"><input id="p-correo" type="email" className="field field-sm" value={d.correo} onChange={(e) => set("correo", e.target.value)} maxLength={160} /></Campo>
           <Campo label="Residencia" htmlFor="p-dir"><input id="p-dir" className="field field-sm" value={d.direccion} onChange={(e) => set("direccion", e.target.value)} maxLength={200} /></Campo>
           <Campo label="Servicio principal" htmlFor="p-serv">

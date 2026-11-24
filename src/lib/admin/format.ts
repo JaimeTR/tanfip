@@ -1,14 +1,6 @@
 // Utilidades de presentación seguras para cliente y servidor.
-const CODIGO_PAIS = process.env.NEXT_PUBLIC_DEFAULT_COUNTRY_CODE || "593";
-
-/** Teléfono → solo dígitos con código de país (0991234567 → 593991234567). */
-export function telefonoWa(tel: string): string {
-  let d = tel.replace(/\D/g, "");
-  if (tel.trim().startsWith("+")) return d;
-  if (d.startsWith("00")) return d.slice(2);
-  if (d.startsWith("0")) d = d.slice(1);
-  return d.startsWith(CODIGO_PAIS) ? d : CODIGO_PAIS + d;
-}
+import { telefonoWa } from "@/lib/phone";
+export { formatoTelefono, telefonoWa } from "@/lib/phone";
 
 export const waLink = (tel: string, texto: string) => `https://wa.me/${telefonoWa(tel)}?text=${encodeURIComponent(texto)}`;
 
