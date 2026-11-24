@@ -36,17 +36,17 @@ export function Footer() {
                 <p className="font-script text-4xl text-leaf">¿Lista/o para sentirte mejor?</p>
                 <p className="mt-1 text-lg text-white/90">Agenda tu cita con Tania en menos de un minuto.</p>
               </div>
-              <a href="#agenda" className="btn max-sm:w-full !bg-white !text-teal-deep shadow-xl hover:!bg-leaf hover:!text-white">
+              <a href="#agenda" className="btn whitespace-nowrap max-sm:w-full !bg-white !text-teal-deep shadow-xl hover:!bg-leaf hover:!text-white">
                 <IconCalendar className="size-5" /> Solicitar mi cita <IconArrow />
               </a>
             </div>
           </Reveal>
 
           {/* columnas */}
-          <div className="grid gap-10 py-14 max-sm:justify-items-center max-sm:text-center sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1.2fr]">
-            <div>
+          <div className="grid gap-9 py-12 max-sm:justify-items-center max-sm:text-center sm:grid-cols-3 sm:gap-x-8 lg:grid-cols-[1.3fr_1fr_1fr_1.2fr] lg:py-14">
+            <div className="sm:col-span-3 sm:justify-self-center lg:col-span-1 lg:justify-self-start">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/brand/logo-vertical-white.svg" alt="TANFIP fisioterapia & pilates by Tania Castro" className="h-36 w-auto" />
+              <img src="/brand/logo-vertical-white.svg" alt="TANFIP fisioterapia & pilates by Tania Castro" className="h-28 w-auto sm:h-32 lg:h-36" />
             </div>
 
             <nav aria-label="Servicios">
@@ -96,11 +96,11 @@ export function Footer() {
           </div>
 
           {/* barra inferior: una sola línea */}
-          <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-white/15 max-sm:flex-col max-sm:text-center pb-24 pt-5 text-xs sm:pb-5 text-white/65">
+          <div className="flex flex-col items-center gap-x-6 gap-y-3 border-t border-white/15 pb-24 pt-6 text-center text-xs text-white/65 lg:flex-row lg:justify-between lg:pb-6 lg:text-left">
             <p>
               © 2026 TANFIP · Fisioterapia &amp; Pilates · by {site.owner}
             </p>
-            <nav aria-label="Legal" className="flex flex-wrap gap-x-5 gap-y-1 max-sm:justify-center">
+            <nav aria-label="Legal" className="flex flex-wrap justify-center gap-x-5 gap-y-1">
               <Link href="/privacidad" className="hover:text-white hover:underline">Privacidad</Link>
               <Link href="/terminos" className="hover:text-white hover:underline">Términos y condiciones</Link>
             </nav>

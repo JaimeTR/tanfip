@@ -68,7 +68,7 @@ export function Header() {
           <img src="/brand/logo-horizontal-color.svg" alt="TANFIP fisioterapia & pilates" width={220} height={60} className="h-10 w-auto sm:h-[3.25rem]" />
         </a>
 
-        <nav aria-label="Principal" className="hidden items-center gap-8 text-sm font-semibold md:flex">
+        <nav aria-label="Principal" className="hidden items-center gap-8 text-sm font-semibold lg:flex">
           {nav.map((l) => (
             <a
               key={l.id}
@@ -90,7 +90,7 @@ export function Header() {
           </a>
           <button
             type="button"
-            className="burger grid size-11 content-center place-items-center gap-[5px] rounded-full md:hidden"
+            className="burger grid size-11 content-center place-items-center gap-[5px] rounded-full lg:hidden"
             aria-label={open ? "Cerrar menú" : "Abrir menú"}
             aria-expanded={open}
             aria-controls="menu-movil"
@@ -107,7 +107,7 @@ export function Header() {
       <div
         id="menu-movil"
         inert={!open}
-        className={`mx-auto mt-2 overflow-hidden rounded-3xl border border-white/80 bg-white/95 shadow-xl backdrop-blur-md transition-all duration-300 md:hidden ${
+        className={`mx-auto mt-2 overflow-hidden rounded-3xl border border-white/80 bg-white/95 shadow-xl backdrop-blur-md transition-all duration-300 lg:hidden ${
           open ? "max-h-96 opacity-100" : "max-h-0 border-transparent opacity-0"
         }`}
         style={{ width: "min(calc(100% - 1.5rem), 72rem)" }}
