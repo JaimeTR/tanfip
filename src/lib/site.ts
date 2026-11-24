@@ -17,6 +17,10 @@ export const faqs = [
     a: "Ropa cómoda que te permita moverte. Si tienes informes, exámenes o indicaciones médicas, tráelos para revisarlos en la valoración.",
   },
   {
+    q: "¿Atiendes a domicilio?",
+    a: "Sí. Atendemos a domicilio en toda Lima. Al solicitar tu cita indica tu distrito y te confirmamos la disponibilidad.",
+  },
+  {
     q: "¿Puedo cambiar o cancelar mi cita?",
     a: "Claro. Avísanos con la mayor anticipación posible para reprogramar y dejar el espacio a otra persona.",
   },
@@ -33,9 +37,9 @@ export const site = {
   phoneDisplay: "949 809 459",
   email: "",
   address: "",
-  // SEO local: completar cuando Tania confirme dónde atiende. Con estos datos Google puede mostrarla en búsquedas "cerca de mí".
-  city: "", // ej. "Lima"
-  region: "", // ej. "Lima"
+  // Atiende a domicilio en toda Lima (sin consultorio fijo): por eso no hay dirección ni coordenadas.
+  city: "Lima",
+  region: "LIM", // código ISO 3166-2:PE (Lima)
   country: "PE",
   lat: 0, // ej. -12.0464 (0 = sin definir)
   lng: 0, // ej. -77.0428

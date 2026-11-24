@@ -10,7 +10,7 @@ const allura = Allura({ variable: "--font-allura", subsets: ["latin"], weight: "
 
 const title = "Tania Castro · Fisioterapia y Pilates en Mat | TANFIP";
 const description =
-  "Fisioterapia, rehabilitación y Pilates en Mat personalizados con Tania Castro. Alivia el dolor de espalda, mejora tu postura y agenda tu cita en línea.";
+  "Fisioterapia, rehabilitación y Pilates en Mat a domicilio en toda Lima con Tania Castro. Alivia el dolor de espalda, mejora tu postura y agenda en línea.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -18,6 +18,9 @@ export const metadata: Metadata = {
   description,
   applicationName: "TANFIP",
   keywords: [
+    "fisioterapia a domicilio Lima",
+    "fisioterapeuta a domicilio",
+    "pilates a domicilio Lima",
     "fisioterapia",
     "pilates en mat",
     "pilates",

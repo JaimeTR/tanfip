@@ -13,13 +13,13 @@ export function JsonLd() {
         logo: `${site.url}/brand/logo-vertical-color.png`,
         image: `${site.url}/opengraph-image`,
         description:
-          "Fisioterapia y Pilates en Mat con atención personalizada, a cargo de Tania Castro.",
+          "Fisioterapia y Pilates en Mat a domicilio en toda Lima, con atención personalizada a cargo de Tania Castro.",
         founder: { "@id": `${site.url}/#tania` },
         telephone: site.phone,
         inLanguage: "es",
         medicalSpecialty: "Physiotherapy",
         knowsAbout: ["Fisioterapia", "Rehabilitación", "Pilates en Mat", "Dolor de espalda", "Postura"],
-        areaServed: { "@type": "Country", name: "Perú" },
+        areaServed: { "@type": "City", name: "Lima", containedInPlace: { "@type": "Country", name: "Perú" } },
         contactPoint: { "@type": "ContactPoint", telephone: site.phone, contactType: "reservas", availableLanguage: "es" },
         address: {
           "@type": "PostalAddress",
