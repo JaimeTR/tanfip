@@ -2,7 +2,7 @@
 export const faqs = [
   {
     q: "¿Cómo agendo mi cita?",
-    a: "Completa el formulario en línea en cuatro pasos: elige el servicio, el día y la hora, deja tus datos y confirma. Tania te contactará para confirmar la disponibilidad.",
+    a: "Completa el formulario en línea en seis pasos: elige el servicio, el día y la hora, deja tus datos y confirma. Tania te contactará para confirmar la disponibilidad.",
   },
   {
     q: "¿Qué diferencia hay entre Fisioterapia y Pilates en Mat?",
@@ -23,7 +23,8 @@ export const faqs = [
 ] as const;
 
 export const site = {
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3100",
+  // En Vercel, si falta NEXT_PUBLIC_SITE_URL se usa el dominio de producción (para canonical, sitemap y datos estructurados).
+  url: (process.env.NEXT_PUBLIC_SITE_URL ?? (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "http://localhost:3100")).replace(/\/$/, ""),
   name: "TANFIP",
   tagline: "fisioterapia & pilates",
   owner: "Tania Castro",
@@ -32,6 +33,12 @@ export const site = {
   phoneDisplay: "949 809 459",
   email: "",
   address: "",
+  // SEO local: completar cuando Tania confirme dónde atiende. Con estos datos Google puede mostrarla en búsquedas "cerca de mí".
+  city: "", // ej. "Lima"
+  region: "", // ej. "Lima"
+  country: "PE",
+  lat: 0, // ej. -12.0464 (0 = sin definir)
+  lng: 0, // ej. -77.0428
   hours: "",
   instagram: "", // ej. "https://www.instagram.com/usuario"
   tiktok: "", // ej. "https://www.tiktok.com/@usuario"

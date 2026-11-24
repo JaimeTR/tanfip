@@ -37,10 +37,16 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
   manifest: "/manifest.webmanifest",
   appleWebApp: { capable: true, title: "TANFIP", statusBarStyle: "default" },
-  icons: { apple: "/icons/apple-touch-icon.png" },
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/icons/favicon-32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: "/icons/apple-touch-icon.png",
+  },
   openGraph: {
     type: "website",
-    locale: "es_LA",
+    locale: "es_PE",
     url: "/",
     siteName: "TANFIP",
     title,
@@ -49,6 +55,12 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title, description },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large" } },
   formatDetection: { telephone: true },
+  // Señales geográficas (la ciudad y las coordenadas se añaden solo si están definidas en site.ts).
+  other: {
+    "geo.region": site.region ? `${site.country}-${site.region}` : site.country,
+    ...(site.city ? { "geo.placename": site.city } : {}),
+    ...(site.lat && site.lng ? { "geo.position": `${site.lat};${site.lng}`, ICBM: `${site.lat}, ${site.lng}` } : {}),
+  },
 };
 
 export const viewport: Viewport = {
@@ -59,7 +71,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="es" className={`${cinzel.variable} ${montserrat.variable} ${allura.variable} antialiased`}>
+    <html lang="es-PE" className={`${cinzel.variable} ${montserrat.variable} ${allura.variable} antialiased`}>
       <body className="min-h-dvh flex flex-col">
         <noscript>
           <style>{`.reveal{opacity:1!important;transform:none!important}.ico-draw path,.ico-draw circle,.ico-draw rect{stroke-dashoffset:0!important}`}</style>
