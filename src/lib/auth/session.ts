@@ -2,6 +2,7 @@ import "server-only";
 import { cache } from "react";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { getDb } from "@/lib/db";
 import { neonConfigured } from "@/lib/db/neon-config";
 import { demoAllowed, supabaseConfigured } from "@/lib/supabase/config";
 import { createUserClient } from "@/lib/supabase/server";
@@ -19,7 +20,13 @@ export const CLAVE_DEMO = "tanfip-demo";
 export const getSession = cache(async (): Promise<Session | null> => {
   if (!supabaseConfigured) {
     if (!neonConfigured && !demoAllowed) return null;
-    return verifySession((await cookies()).get(SESSION_COOKIE)?.value);
+    const ses = await verifySession((await cookies()).get(SESSION_COOKIE)?.value);
+    if (ses && neonConfigured && ses.id !== "admin") {
+      const u = await (await getDb()).getUsuario(ses.id);
+      if (!u || !u.activo) return null;
+      return { ...ses, rol: u.rol, nombre: u.nombre };
+    }
+    return ses;
   }
   const sb = await createUserClient();
   const { data } = await sb.auth.getUser();

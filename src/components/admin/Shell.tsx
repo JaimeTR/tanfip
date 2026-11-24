@@ -29,6 +29,7 @@ const NAV = [
   { href: "/admin/recordatorios", label: "Recordatorios", Icon: IconBell },
   { href: "/admin/servicios", label: "Servicios y horarios", Icon: IconSliders },
   { href: "/admin/sitio", label: "Sitio web", Icon: IconGlobe, soloProfesional: true },
+  { href: "/admin/usuarios", label: "Usuarios", Icon: IconUsers, soloProfesional: true },
 ];
 
 export function AdminShell({ user, nuevas, children }: Props) {

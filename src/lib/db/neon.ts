@@ -2,7 +2,7 @@
 // No hay RLS: toda autorización se hace en el servidor (acciones y rutas) antes de llegar aquí.
 import "server-only";
 import { neon } from "@neondatabase/serverless";
-import { ConflictError, type Archivo, type Db } from "./types";
+import { ConflictError, type Archivo, type Db, type Usuario } from "./types";
 
 type Row = Record<string, unknown>;
 
@@ -141,13 +141,19 @@ export function createNeonDb(url: string): Db {
   let listoArchivos: Promise<unknown> | null = null;
   const tablaArchivos = () =>
     (listoArchivos ??= run(
+      `create table if not exists public.usuarios (
+        id uuid primary key default gen_random_uuid(),
+        email text not null unique, nombre text not null, rol text not null check (rol in ('profesional','recepcion')),
+        hash text not null, activo boolean not null default true, creado_en timestamptz not null default now()
+      )`,
+    ).then(() => run(
       `create table if not exists public.archivos (
         id uuid primary key default gen_random_uuid(),
         paciente_id uuid not null references public.pacientes (id) on delete cascade,
         nombre text not null, tipo text not null, tamano integer not null, datos bytea not null,
         creado_en timestamptz not null default now(), creado_por text not null default ''
       )`,
-    ).then(() => run("create index if not exists archivos_paciente_idx on public.archivos (paciente_id)")).catch((e) => { listoArchivos = null; throw e; }));
+    )).then(() => run("create index if not exists archivos_paciente_idx on public.archivos (paciente_id)")).catch((e) => { listoArchivos = null; throw e; }));
   const META = "id, paciente_id, nombre, tipo, tamano, creado_en, creado_por";
 
   return {
@@ -221,6 +227,40 @@ export function createNeonDb(url: string): Db {
     async deleteArchivo(id) {
       await tablaArchivos();
       await run("delete from public.archivos where id = $1", [id]);
+    },
+    async listUsuarios() {
+      await tablaArchivos();
+      return lista<Usuario>("select id, email, nombre, rol, activo, creado_en from public.usuarios order by nombre");
+    },
+    async getUsuario(id) {
+      await tablaArchivos();
+      return una<Usuario>("select id, email, nombre, rol, activo, creado_en from public.usuarios where id::text = $1", [id]);
+    },
+    async getUsuarioPorEmail(email) {
+      await tablaArchivos();
+      return una<Usuario & { hash: string }>("select id, email, nombre, rol, activo, creado_en, hash from public.usuarios where email = $1", [email]);
+    },
+    async saveUsuario(u) {
+      await tablaArchivos();
+      try {
+        const f = u.id
+          ? await run(
+              "update public.usuarios set email = $1, nombre = $2, rol = $3, activo = $4, hash = coalesce($5, hash) where id::text = $6 returning to_jsonb(usuarios) - 'hash' as r",
+              [u.email, u.nombre, u.rol, u.activo, u.hash ?? null, u.id],
+            )
+          : await run(
+              "insert into public.usuarios (email, nombre, rol, activo, hash) values ($1, $2, $3, $4, $5) returning to_jsonb(usuarios) - 'hash' as r",
+              [u.email, u.nombre, u.rol, u.activo, u.hash ?? ""],
+            );
+        return fromRow<Usuario>(f[0]?.r as Row);
+      } catch (e) {
+        if ((e as Error).message.includes("(23505)")) throw new ConflictError("Ya existe un usuario con ese correo.");
+        throw e;
+      }
+    },
+    async deleteUsuario(id) {
+      await tablaArchivos();
+      await run("delete from public.usuarios where id::text = $1", [id]);
     },
     async getSettings() {
       const filas = await run("select clave, valor from public.site_settings");

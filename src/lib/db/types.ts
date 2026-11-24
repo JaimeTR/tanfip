@@ -145,6 +145,15 @@ export type Plan = {
 };
 export type PlanInput = Omit<Plan, "id" | "creadoEn" | "creadoPor" | "actualizadoEn" | "actualizadoPor"> & { id?: string };
 
+export type Usuario = {
+  id: string;
+  email: string;
+  nombre: string;
+  rol: Rol;
+  activo: boolean;
+  creadoEn: string;
+};
+
 export type Archivo = {
   id: string;
   pacienteId: string;
@@ -202,6 +211,13 @@ export type Db = {
   saveArchivo(a: Pick<Archivo, "pacienteId" | "nombre" | "tipo" | "tamano">, base64: string, actor: string): Promise<Archivo>;
   getArchivo(id: string): Promise<{ archivo: Archivo; base64: string } | null>;
   deleteArchivo(id: string, actor: string): Promise<void>;
+  // usuarios del panel (modo Neon / local; con Supabase se gestionan en Supabase Auth)
+  listUsuarios(): Promise<Usuario[]>;
+  getUsuario(id: string): Promise<Usuario | null>;
+  /** Para iniciar sesión: incluye el hash de la contraseña. */
+  getUsuarioPorEmail(email: string): Promise<(Usuario & { hash: string }) | null>;
+  saveUsuario(u: { id?: string; email: string; nombre: string; rol: Rol; activo: boolean; hash?: string }): Promise<Usuario>;
+  deleteUsuario(id: string): Promise<void>;
   // web
   getSettings(): Promise<Partial<SiteSettings>>;
   saveSettings(s: Partial<SiteSettings>, actor: string): Promise<void>;

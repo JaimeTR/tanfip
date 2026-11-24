@@ -2,7 +2,9 @@
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { CLAVE_DEMO, USUARIOS_DEMO } from "@/lib/auth/session";
-import { SESSION_COOKIE, SESSION_MAX_AGE, signSession } from "@/lib/auth/token";
+import { hashClave, verificarClave } from "@/lib/auth/password";
+import { SESSION_COOKIE, SESSION_MAX_AGE, signSession, type Session } from "@/lib/auth/token";
+import { getDb } from "@/lib/db";
 import { createHash, timingSafeEqual } from "node:crypto";
 import { neonConfigured } from "@/lib/db/neon-config";
 import { limitar } from "@/lib/rate-limit";
@@ -11,6 +13,7 @@ import { createUserClient } from "@/lib/supabase/server";
 
 export type LoginState = { error: string } | null;
 
+const HASH_FALSO = hashClave("no-existe");
 const GENERICO = "Correo o contraseña incorrectos.";
 
 export async function iniciarSesion(_prev: LoginState, form: FormData): Promise<LoginState> {
@@ -39,12 +42,19 @@ export async function iniciarSesion(_prev: LoginState, form: FormData): Promise<
     }
     const h = (x: string) => createHash("sha256").update(x).digest();
     const claveOk = timingSafeEqual(h(clave), h(adminClave));
-    if (email !== adminEmail || !claveOk) return { error: GENERICO };
-    (await cookies()).set(
-      SESSION_COOKIE,
-      await signSession({ id: "admin", email: adminEmail, nombre: process.env.ADMIN_NAME || "Tania Castro", rol: "profesional" }),
-      { httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", path: "/", maxAge: SESSION_MAX_AGE }
-    );
+    let sesion: Session | null = null;
+    if (email === adminEmail && claveOk) {
+      sesion = { id: "admin", email: adminEmail, nombre: process.env.ADMIN_NAME || "Tania Castro", rol: "profesional" };
+    } else {
+      // Usuarios creados desde el panel (recepción u otros profesionales).
+      const u = await (await getDb()).getUsuarioPorEmail(email);
+      const hash = u?.hash || HASH_FALSO; // siempre se calcula un hash: no revela si el correo existe
+      if (verificarClave(clave, hash) && u?.activo) sesion = { id: u.id, email: u.email, nombre: u.nombre, rol: u.rol };
+    }
+    if (!sesion) return { error: GENERICO };
+    (await cookies()).set(SESSION_COOKIE, await signSession(sesion), {
+      httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", path: "/", maxAge: SESSION_MAX_AGE,
+    });
   } else {
     if (!demoAllowed) return { error: "El acceso no está configurado todavía." };
     const u = USUARIOS_DEMO.find((x) => x.email === email);

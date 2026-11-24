@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { supabaseConfigured } from "@/lib/supabase/config";
 import { createUserClient } from "@/lib/supabase/server";
 import { authorize } from "@/lib/auth/session";
+import { hashClave } from "@/lib/auth/password";
 import type { Session } from "@/lib/auth/token";
 import { getDb } from "@/lib/db";
 import { buscarChoque } from "@/lib/db/availability";
@@ -270,12 +271,70 @@ export async function guardarSitio(raw: unknown) {
 export type { Cita };
 
 // ---------- perfil ----------
+const claveValida = (v: unknown) => {
+  const clave = typeof v === "string" ? v : "";
+  if (clave.length < 8 || clave.length > 128) throw new ValidationError("La contraseña debe tener entre 8 y 128 caracteres.");
+  return clave;
+};
+
 export async function cambiarClave(nueva: unknown) {
-  return run(AMBOS, async () => {
-    if (!supabaseConfigured) throw new ValidationError("La contraseña de esta cuenta se cambia en la configuración del servidor.");
-    const clave = typeof nueva === "string" ? nueva : "";
-    if (clave.length < 8 || clave.length > 128) throw new ValidationError("La contraseña debe tener entre 8 y 128 caracteres.");
+  return run(AMBOS, async (s, db) => {
+    const clave = claveValida(nueva);
+    if (!supabaseConfigured) {
+      // Usuarios del panel (Neon/local) cambian su propia contraseña; la cuenta principal usa ADMIN_PASSWORD.
+      const u = s.id === "admin" ? null : await db.getUsuario(s.id);
+      if (!u) throw new ValidationError("La contraseña de esta cuenta se cambia en la configuración del servidor.");
+      await db.saveUsuario({ ...u, hash: hashClave(clave) });
+      await db.audit(s.id, "cambiar_clave", "usuario", s.id);
+      return;
+    }
     const { error } = await (await createUserClient()).auth.updateUser({ password: clave });
     if (error) throw new ValidationError("No se pudo cambiar la contraseña. Intenta de nuevo.");
+  });
+}
+
+// ---------- usuarios del panel (solo profesional; modo Neon/local) ----------
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+function parseUsuario(raw: unknown) {
+  const o = (raw && typeof raw === "object" ? raw : {}) as Record<string, unknown>;
+  const nombre = str(o.nombre, 80);
+  const email = str(o.email, 160).toLowerCase();
+  if (nombre.length < 3) throw new ValidationError("Escribe el nombre completo.");
+  if (!EMAIL.test(email)) throw new ValidationError("Correo no válido.");
+  if (o.rol !== "profesional" && o.rol !== "recepcion") throw new ValidationError("Elige un rol.");
+  return { nombre, email, rol: o.rol as Rol };
+}
+const sinUsuarios = () => {
+  if (supabaseConfigured) throw new ValidationError("Con Supabase los usuarios se gestionan en Supabase Auth.");
+};
+
+export async function crearUsuario(raw: unknown, clave: unknown) {
+  return run(SOLO_PROF, async (s, db) => {
+    sinUsuarios();
+    const base = parseUsuario(raw);
+    const u = await db.saveUsuario({ ...base, activo: true, hash: hashClave(claveValida(clave)) });
+    await db.audit(s.id, "crear", "usuario", u.id);
+    return { id: u.id };
+  });
+}
+export async function actualizarUsuario(id: unknown, raw: unknown, clave?: unknown) {
+  return run(SOLO_PROF, async (s, db) => {
+    sinUsuarios();
+    const uid = parseId(id);
+    const u = await db.getUsuario(uid);
+    if (!u) throw new ValidationError("El usuario ya no existe.");
+    const base = parseUsuario(raw);
+    const activo = (raw as { activo?: unknown })?.activo !== false;
+    await db.saveUsuario({ id: uid, ...base, activo, hash: clave ? hashClave(claveValida(clave)) : undefined });
+    await db.audit(s.id, "editar", "usuario", uid);
+    return { id: uid };
+  });
+}
+export async function eliminarUsuario(id: unknown) {
+  return run(SOLO_PROF, async (s, db) => {
+    sinUsuarios();
+    const uid = parseId(id);
+    await db.deleteUsuario(uid);
+    await db.audit(s.id, "eliminar", "usuario", uid);
   });
 }

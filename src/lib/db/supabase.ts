@@ -174,6 +174,11 @@ export function createSupabaseDb(c: SupabaseClient): Db {
     savePlan: (p, actor) => upsertAuditado("plan_tratamiento", p, actor),
     deletePlan: (id) => del("plan_tratamiento", id),
 
+    listUsuarios: async () => [],
+    getUsuario: async () => null,
+    getUsuarioPorEmail: async () => null,
+    saveUsuario: async () => { throw new Error("Usuarios se gestionan en Supabase Auth"); },
+    deleteUsuario: async () => {},
     // Los archivos de pacientes se guardan solo con Neon o en modo local.
     listArchivos: async () => [],
     saveArchivo: async () => { throw new Error("Archivos no disponibles con Supabase"); },
