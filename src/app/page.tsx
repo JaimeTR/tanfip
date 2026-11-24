@@ -24,7 +24,7 @@ const serviceIcon: Record<string, typeof IconHeart> = { fisioterapia: IconHeart,
 
 function SectionTitle({ kicker, title, center = false }: { kicker: string; title: string; center?: boolean }) {
   return (
-    <div className={center ? "text-center" : ""}>
+    <div className={center ? "text-center" : "max-md:text-center"}>
       <p className="font-script text-4xl text-leaf-deep">{kicker}</p>
       <h2 className="font-display text-3xl font-semibold text-teal-deep sm:text-4xl">{title}</h2>
     </div>
@@ -59,14 +59,14 @@ export default function Home() {
           </div>
 
           <div className="mx-auto grid w-full max-w-6xl items-center gap-8 px-4 pb-16 pt-28 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8 lg:pb-14 lg:pt-24">
-            <div>
+            <div className="max-lg:text-center">
               <p className="rise font-script text-[clamp(2.2rem,1.4rem+2vw,3.2rem)] leading-none text-teal">by {site.owner}</p>
               <RotatingTitle
                 seo="Fisioterapia y Pilates en Mat con Tania Castro"
-                descClassName="rise d3 mt-4 max-w-lg text-lg leading-relaxed text-muted sm:text-xl"
+                descClassName="rise d3 mt-4 max-w-lg max-lg:mx-auto text-lg leading-relaxed text-muted sm:text-xl"
                 className="rise d1 mt-3 font-display text-[clamp(2.25rem,1.3rem+2.8vw,3.75rem)] font-semibold leading-[1.1] text-teal-deep"
               />
-              <div className="rise d4 mt-6 grid gap-3 sm:flex sm:flex-wrap">
+              <div className="rise d4 mt-6 grid gap-3 max-sm:mx-auto max-sm:max-w-sm sm:flex sm:flex-wrap max-lg:sm:justify-center">
                 <a href="#agenda" className="btn btn-primary">
                   <IconCalendar className="size-5" /> Solicitar mi cita <IconArrow />
                 </a>
@@ -125,12 +125,12 @@ export default function Home() {
                     <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/25 to-transparent" aria-hidden="true" />
                     </div>
                     <div className="relative flex flex-1 flex-col px-7 pb-7 pt-10">
-                      <span className="absolute -top-7 left-7 z-10 grid size-14 place-items-center rounded-2xl bg-gradient-to-br from-teal to-teal-deep text-white shadow-lg ring-4 ring-white">
+                      <span className="absolute -top-7 left-7 z-10 grid size-14 max-md:left-1/2 max-md:-translate-x-1/2 place-items-center rounded-2xl bg-gradient-to-br from-teal to-teal-deep text-white shadow-lg ring-4 ring-white">
                         <Ico className="size-7" />
                       </span>
-                      <h3 className="font-display text-2xl font-semibold text-teal-deep">{s.title}</h3>
-                      <p className="mt-2 text-muted">{s.lead}</p>
-                      <ul className="mt-5 grid gap-3 text-[0.95rem]">
+                      <h3 className="font-display text-2xl font-semibold text-teal-deep max-md:text-center">{s.title}</h3>
+                      <p className="mt-2 text-muted max-md:text-center">{s.lead}</p>
+                      <ul className="mt-5 grid gap-3 text-[0.95rem] max-md:mx-auto max-md:w-fit max-md:max-w-full">
                         {s.points.map((p) => (
                           <li key={p} className="flex items-start gap-3">
                             <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-leaf/20 text-leaf-deep">
@@ -140,7 +140,7 @@ export default function Home() {
                           </li>
                         ))}
                       </ul>
-                      <a href="#agenda" className="btn btn-ghost mt-8 self-start">
+                      <a href="#agenda" className="btn btn-ghost mt-8 self-start max-md:self-center">
                         <IconCalendar className="size-5" /> Agendar <IconArrow />
                       </a>
                     </div>
@@ -163,7 +163,7 @@ export default function Home() {
                   <span aria-hidden="true" className="absolute -right-14 top-1/2 hidden w-14 -translate-y-1/2 border-t-[3px] border-dotted border-teal/40 md:block" />
                 )}
                 <Reveal delay={i * 140}>
-                  <div className="glass lift hov relative flex h-full items-start gap-4 rounded-3xl p-5 md:block md:p-7">
+                  <div className="glass lift hov relative flex h-full flex-col items-center gap-4 rounded-3xl p-5 text-center md:block md:p-7 md:text-left">
                     <span className="relative mb-0 grid size-14 shrink-0 md:mb-4 place-items-center rounded-2xl bg-gradient-to-br from-teal to-teal-deep text-white shadow-lg">
                       <Icon className="size-7" />
                       <span className="absolute -right-2 -top-2 grid size-6 place-items-center rounded-full bg-leaf-deep text-xs font-bold ring-2 ring-white">
@@ -225,7 +225,7 @@ export default function Home() {
                     </li>
                   ))}
                 </ul>
-                <div className="mt-8 grid gap-3 sm:flex sm:flex-wrap sm:justify-center md:justify-start">
+                <div className="mt-8 grid gap-3 max-sm:mx-auto max-sm:max-w-sm sm:flex sm:flex-wrap sm:justify-center md:justify-start">
                   <a href="#agenda" className="btn btn-primary">
                     <IconCalendar className="size-5" /> Agenda conmigo <IconArrow />
                   </a>

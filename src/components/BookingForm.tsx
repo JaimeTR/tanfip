@@ -290,10 +290,10 @@ export function BookingForm() {
         {/* CONTENIDO */}
         <div className="flex-1 p-6 sm:p-9">
           <div key={step} className={dir === "next" ? "step-next" : "step-prev"}>
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-leaf-deep">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-leaf-deep max-sm:text-center">
               Paso {step + 1} de {STEPS.length}
             </p>
-            <h3 ref={heading} tabIndex={-1} className="mt-1 font-display text-2xl font-semibold text-teal-deep outline-none sm:text-3xl">
+            <h3 ref={heading} tabIndex={-1} className="mt-1 font-display text-2xl font-semibold text-teal-deep outline-none max-sm:text-center sm:text-3xl">
               {
                 [
                   "¿Qué servicio necesitas?",
@@ -317,7 +317,7 @@ export function BookingForm() {
                         key={s.id}
                         aria-pressed={d.servicio === s.id}
                         onClick={() => set("servicio", s.id)}
-                        className="opt group/tile hov flex flex-col justify-start overflow-hidden rounded-3xl border-2 border-teal/15 bg-white text-left"
+                        className="opt group/tile hov flex flex-col justify-start overflow-hidden rounded-3xl border-2 border-teal/15 bg-white text-left max-sm:text-center"
                       >
                         <span className="relative block aspect-[16/10] w-full shrink-0 overflow-hidden">
                           <Image src={`/photos/${s.photo}.webp`} alt={s.alt} fill sizes="(min-width: 640px) 25vw, 90vw" style={{ objectPosition: s.position }} className="object-cover" />
@@ -326,7 +326,7 @@ export function BookingForm() {
                           </span>
                         </span>
                         <span className="block w-full p-5">
-                          <span className="flex items-center gap-2 font-display text-xl font-semibold text-teal-deep">
+                          <span className="flex items-center gap-2 font-display text-xl font-semibold text-teal-deep max-sm:justify-center">
                             {i === 0 ? <IconHeart className="size-5" /> : i === 1 ? <IconPilates className="size-5" /> : <IconClipboard className="size-5" />}
                             {s.title}
                           </span>
