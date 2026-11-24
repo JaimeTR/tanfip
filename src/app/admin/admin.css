@@ -162,3 +162,4 @@ dialog.a-modal[open] .a-modal-box { animation: pop .28s cubic-bezier(.2,.9,.3,1.
   .adm-main { padding-bottom: calc(5.5rem + env(safe-area-inset-bottom)); }
   .a-toasts { bottom: calc(4.8rem + env(safe-area-inset-bottom)); }
 }
+@media (min-width: 1024px) { .bottom-nav { display: none; } }
