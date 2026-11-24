@@ -2,7 +2,7 @@
 // No hay RLS: toda autorización se hace en el servidor (acciones y rutas) antes de llegar aquí.
 import "server-only";
 import { neon } from "@neondatabase/serverless";
-import { ConflictError, type Archivo, type Db, type Usuario } from "./types";
+import { ConflictError, type Archivo, type Db, type Pago, type Usuario } from "./types";
 
 type Row = Record<string, unknown>;
 
@@ -153,6 +153,14 @@ export function createNeonDb(url: string): Db {
         nombre text not null, tipo text not null, tamano integer not null, datos bytea not null,
         creado_en timestamptz not null default now(), creado_por text not null default ''
       )`,
+    )).then(() => run(
+      `create table if not exists public.pagos (
+        id uuid primary key default gen_random_uuid(),
+        paciente_id uuid not null references public.pacientes (id) on delete cascade,
+        cita_id uuid references public.citas (id) on delete set null,
+        monto numeric(10,2) not null check (monto > 0), metodo text not null, fecha date not null, concepto text not null default '',
+        creado_en timestamptz not null default now(), creado_por text not null default ''
+      )`,
     )).then(() => run("create index if not exists archivos_paciente_idx on public.archivos (paciente_id)")).catch((e) => { listoArchivos = null; throw e; }));
   const META = "id, paciente_id, nombre, tipo, tamano, creado_en, creado_por";
 
@@ -261,6 +269,27 @@ export function createNeonDb(url: string): Db {
     async deleteUsuario(id) {
       await tablaArchivos();
       await run("delete from public.usuarios where id::text = $1", [id]);
+    },
+    async listPagos() {
+      await tablaArchivos();
+      return (await lista<Pago>("select id, paciente_id, cita_id, monto::float8 as monto, metodo, fecha, concepto, creado_en, creado_por from public.pagos order by fecha desc, creado_en desc"));
+    },
+    async savePago(p, actor) {
+      await tablaArchivos();
+      const f = p.id
+        ? await run(
+            "update public.pagos set paciente_id = $1, cita_id = nullif($2, '')::uuid, monto = $3, metodo = $4, fecha = $5, concepto = $6 where id::text = $7 returning to_jsonb(pagos) as r",
+            [p.pacienteId, p.citaId, p.monto, p.metodo, p.fecha, p.concepto, p.id],
+          )
+        : await run(
+            "insert into public.pagos (paciente_id, cita_id, monto, metodo, fecha, concepto, creado_por) values ($1, nullif($2, '')::uuid, $3, $4, $5, $6, $7) returning to_jsonb(pagos) as r",
+            [p.pacienteId, p.citaId, p.monto, p.metodo, p.fecha, p.concepto, actor],
+          );
+      return fromRow<Pago>(f[0]?.r as Row);
+    },
+    async deletePago(id) {
+      await tablaArchivos();
+      await run("delete from public.pagos where id::text = $1", [id]);
     },
     async getSettings() {
       const filas = await run("select clave, valor from public.site_settings");

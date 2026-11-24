@@ -51,3 +51,4 @@ export const IconTarget = mk("ico-spin", <><circle cx="12" cy="12" r="8" /><circ
 export const IconSparkle = mk("ico-spin", <path d="M12 3c.6 4.500 2.500 6.400 7 7-4.500.6-6.400 2.500-7 7-.6-4.500-2.500-6.400-7-7 4.500-.6 6.400-2.500 7-7Z" />);
 export const IconUser2 = mk("ico-sway", <><circle cx="12" cy="8" r="3.500" /><path d="M5 20c.8-4 3.500-6 7-6s6.200 2 7 6" /></>);
 export const IconBell = mk("ico-sway", <><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15Z" /><path d="M10 20.5a2 2 0 0 0 4 0" /></>);
+export const IconWallet = mk("ico-bounce", <><path d="M4 7.5A2.5 2.5 0 0 1 6.5 5H18v3" /><path d="M4 7.5V17a2 2 0 0 0 2 2h12.5a1.500 1.500 0 0 0 1.500-1.500v-8A1.500 1.500 0 0 0 18.500 8H6.500A2.500 2.500 0 0 1 4 7.500Z" /><circle cx="16" cy="13.500" r="1.200" /></>);

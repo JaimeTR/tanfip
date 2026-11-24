@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import { cerrarSesion } from "@/app/admin/login/actions";
 import { IconCalendar } from "@/components/Icons";
-import { IconBell, IconChevronLeft, IconChevronRight, IconGlobe, IconHome, IconInbox, IconLogout, IconMenu, IconSliders, IconUser2, IconUsers } from "./icons";
+import { IconBell, IconChevronLeft, IconWallet, IconChevronRight, IconGlobe, IconHome, IconInbox, IconLogout, IconMenu, IconSliders, IconUser2, IconUsers } from "./icons";
 import { UiProvider } from "./ui";
 
 type Props = {
@@ -26,6 +26,7 @@ const NAV = [
   { href: "/admin/solicitudes", label: "Solicitudes", Icon: IconInbox },
   { href: "/admin/pacientes", label: "Pacientes", Icon: IconUsers },
   { href: "/admin/citas", label: "Citas", Icon: IconCalendar },
+  { href: "/admin/pagos", label: "Pagos", Icon: IconWallet },
   { href: "/admin/recordatorios", label: "Recordatorios", Icon: IconBell },
   { href: "/admin/servicios", label: "Servicios y horarios", Icon: IconSliders },
   { href: "/admin/sitio", label: "Sitio web", Icon: IconGlobe, soloProfesional: true },

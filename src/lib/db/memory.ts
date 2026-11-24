@@ -3,7 +3,7 @@ import { buscarChoque } from "./availability";
 import { crearSemilla, HORARIOS_BASE, SERVICIOS_BASE } from "./seed";
 import {
   ConflictError,
-  type Archivo, type Usuario, type Bloqueo, type Cita, type Db, type Horario, type Nota, type Paciente, type Plan, type Servicio, type SiteSettings, type Solicitud,
+  type Archivo, type Pago, type Usuario, type Bloqueo, type Cita, type Db, type Horario, type Nota, type Paciente, type Plan, type Servicio, type SiteSettings, type Solicitud,
 } from "./types";
 
 type Store = {
@@ -11,8 +11,9 @@ type Store = {
   citas: Cita[]; notas: Nota[]; planes: Plan[]; settings: Partial<SiteSettings>;
 };
 
-const g = globalThis as unknown as { __tanfipMem?: Store; __tanfipUsuarios?: Map<string, Usuario & { hash: string }>; __tanfipArchivos?: Map<string, { archivo: Archivo; base64: string }> };
+const g = globalThis as unknown as { __tanfipMem?: Store; __tanfipPagos?: Pago[]; __tanfipUsuarios?: Map<string, Usuario & { hash: string }>; __tanfipArchivos?: Map<string, { archivo: Archivo; base64: string }> };
 const usuariosMem = () => (g.__tanfipUsuarios ??= new Map());
+const pagosMem = () => (g.__tanfipPagos ??= []);
 const archivos = () => (g.__tanfipArchivos ??= new Map());
 
 function store(): Store {
@@ -118,6 +119,17 @@ export const memoryDb: Db = {
     return clone(pub);
   },
   async deleteUsuario(id) { usuariosMem().delete(id); },
+
+  async listPagos() { return clone(pagosMem()).sort((a, b) => b.fecha.localeCompare(a.fecha) || b.creadoEn.localeCompare(a.creadoEn)); },
+  async savePago(p, actor) {
+    const lista = pagosMem();
+    const prev = p.id ? lista.find((x) => x.id === p.id) : undefined;
+    if (prev) { Object.assign(prev, p); return clone(prev); }
+    const nuevo: Pago = { ...p, id: uid(), creadoEn: now(), creadoPor: actor };
+    lista.push(nuevo);
+    return clone(nuevo);
+  },
+  async deletePago(id) { g.__tanfipPagos = pagosMem().filter((x) => x.id !== id); },
 
   async getSettings() { return clone(store().settings); },
   async saveSettings(s) { store().settings = { ...store().settings, ...clone(s) }; },

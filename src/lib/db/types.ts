@@ -154,6 +154,22 @@ export type Usuario = {
   creadoEn: string;
 };
 
+export const METODOS_PAGO = ["efectivo", "yape", "plin", "transferencia", "tarjeta"] as const;
+export type MetodoPago = (typeof METODOS_PAGO)[number];
+
+export type Pago = {
+  id: string;
+  pacienteId: string;
+  citaId: string; // "" si no está ligado a una cita
+  monto: number;
+  metodo: MetodoPago;
+  fecha: string;
+  concepto: string;
+  creadoEn: string;
+  creadoPor: string;
+};
+export type PagoInput = Omit<Pago, "id" | "creadoEn" | "creadoPor"> & { id?: string };
+
 export type Archivo = {
   id: string;
   pacienteId: string;
@@ -218,6 +234,10 @@ export type Db = {
   getUsuarioPorEmail(email: string): Promise<(Usuario & { hash: string }) | null>;
   saveUsuario(u: { id?: string; email: string; nombre: string; rol: Rol; activo: boolean; hash?: string }): Promise<Usuario>;
   deleteUsuario(id: string): Promise<void>;
+  // pagos (registro manual)
+  listPagos(): Promise<Pago[]>;
+  savePago(p: PagoInput, actor: string): Promise<Pago>;
+  deletePago(id: string, actor: string): Promise<void>;
   // web
   getSettings(): Promise<Partial<SiteSettings>>;
   saveSettings(s: Partial<SiteSettings>, actor: string): Promise<void>;

@@ -1,5 +1,6 @@
 // Validación y saneamiento en el servidor de todo lo que llega desde el navegador o la landing.
 import { isHHMM, isISODate } from "./dates";
+import { METODOS_PAGO } from "./types";
 import type { CitaInput, EstadoCita, EstadoPaciente, EstadoPlan, Horario, NotaInput, NuevaSolicitud, PacienteInput, PlanInput, Servicio, SiteSettings } from "./types";
 
 export class ValidationError extends Error {}
@@ -169,6 +170,21 @@ export function parseHorarios(raw: unknown): Horario[] {
     if (!!h.pausaInicio !== !!h.pausaFin || (h.pausaInicio && h.pausaFin <= h.pausaInicio)) bad("Revisa la pausa del almuerzo");
     return h;
   });
+}
+
+export function parsePago(raw: unknown) {
+  const o = obj(raw);
+  const monto = Math.round(Number(o.monto) * 100) / 100;
+  if (!Number.isFinite(monto) || monto <= 0 || monto > 100000) bad("El monto debe ser mayor a 0");
+  return {
+    id: id(o.id) || undefined,
+    pacienteId: idReq(o.pacienteId, "Elige un paciente"),
+    citaId: id(o.citaId),
+    monto,
+    metodo: oneOf(o.metodo, METODOS_PAGO, "Elige el método de pago"),
+    fecha: fecha(o.fecha),
+    concepto: str(o.concepto, 160),
+  };
 }
 
 export function parseBloqueo(raw: unknown) {

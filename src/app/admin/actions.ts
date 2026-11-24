@@ -14,7 +14,7 @@ import { enviarCorreo, MENSAJES_CORREO } from "@/lib/email";
 import { diaLargo } from "@/lib/admin/format";
 import { ConflictError, type Cita, type Db, type EstadoCita, type Rol } from "@/lib/db/types";
 import {
-  parseBloqueo, parseCita, parseEstadoCita, parseFecha, parseHora, parseHorarios, parseId, parseNota, parsePaciente, parsePlan,
+  parseBloqueo, parseCita, parsePago, parseEstadoCita, parseFecha, parseHora, parseHorarios, parseId, parseNota, parsePaciente, parsePlan,
   parseServicio, parseSettings, str, ValidationError,
 } from "@/lib/db/validate";
 
@@ -336,5 +336,23 @@ export async function eliminarUsuario(id: unknown) {
     const uid = parseId(id);
     await db.deleteUsuario(uid);
     await db.audit(s.id, "eliminar", "usuario", uid);
+  });
+}
+
+// ---------- pagos (recepción y profesional; borrar solo profesional) ----------
+export async function guardarPago(raw: unknown) {
+  return run(AMBOS, async (s, db) => {
+    const input = parsePago(raw);
+    if (!(await db.getPaciente(input.pacienteId))) throw new ValidationError("El paciente ya no existe");
+    const p = await db.savePago({ ...input, id: input.id }, s.id);
+    await db.audit(s.id, input.id ? "editar" : "crear", "pago", p.id);
+    return { id: p.id };
+  });
+}
+export async function eliminarPago(id: unknown) {
+  return run(SOLO_PROF, async (s, db) => {
+    const pid = parseId(id);
+    await db.deletePago(pid, s.id);
+    await db.audit(s.id, "eliminar", "pago", pid);
   });
 }

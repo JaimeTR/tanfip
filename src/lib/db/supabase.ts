@@ -179,6 +179,9 @@ export function createSupabaseDb(c: SupabaseClient): Db {
     getUsuarioPorEmail: async () => null,
     saveUsuario: async () => { throw new Error("Usuarios se gestionan en Supabase Auth"); },
     deleteUsuario: async () => {},
+    listPagos: async () => [],
+    savePago: async () => { throw new Error("Pagos no disponibles con Supabase"); },
+    deletePago: async () => {},
     // Los archivos de pacientes se guardan solo con Neon o en modo local.
     listArchivos: async () => [],
     saveArchivo: async () => { throw new Error("Archivos no disponibles con Supabase"); },
