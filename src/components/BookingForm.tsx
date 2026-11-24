@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { GRACIAS_KEY } from "./GraciasView";
 import { services, site } from "@/lib/site";
@@ -682,7 +683,9 @@ export function BookingForm() {
                     <span className="leading-relaxed text-muted">
                       <IconLock className="mr-1 inline size-4 text-teal" />
                       La información proporcionada será utilizada exclusivamente para fines de registro y atención fisioterapéutica, manteniendo la
-                      confidencialidad de mis datos personales y de salud.
+                      confidencialidad de mis datos personales y de salud. Acepto la{" "}
+                      <Link href="/privacidad" target="_blank" className="font-semibold text-teal-deep underline underline-offset-2">política de privacidad</Link> y los{" "}
+                      <Link href="/terminos" target="_blank" className="font-semibold text-teal-deep underline underline-offset-2">términos y condiciones</Link>.
                     </span>
                   </label>
                   {status === "error" && (

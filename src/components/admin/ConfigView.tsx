@@ -1,16 +1,13 @@
 "use client";
-import Link from "next/link";
 import { useState } from "react";
 import { guardarAjustes } from "@/app/admin/actions";
 import { CopyField } from "./CopyField";
 import { Campo, useAct } from "./ui";
 
-type Estado = { nombre: string; ok: boolean; detalle: string };
-
 const EJEMPLO = { "{nombre}": "María", "{servicio}": "Fisioterapia", "{fecha}": "miércoles, 25 de noviembre", "{hora}": "10:00" };
 const vista = (t: string) => Object.entries(EJEMPLO).reduce((s, [k, v]) => s.replaceAll(k, v), t);
 
-export function ConfigView({ inicial, plantillaBase, calUrl, estado }: { inicial: { activo: boolean; plantilla: string }; plantillaBase: string; calUrl: string; estado: Estado[] }) {
+export function ConfigView({ inicial, plantillaBase, calUrl }: { inicial: { activo: boolean; plantilla: string }; plantillaBase: string; calUrl: string }) {
   const [activo, setActivo] = useState(inicial.activo);
   const [plantilla, setPlantilla] = useState(inicial.plantilla || plantillaBase);
   const [error, setError] = useState("");
@@ -26,7 +23,7 @@ export function ConfigView({ inicial, plantillaBase, calUrl, estado }: { inicial
     <div className="max-w-3xl space-y-6">
       <header>
         <h1 className="a-h1">Configuración</h1>
-        <p className="a-muted text-sm">Recordatorios, calendario y estado del sistema.</p>
+        <p className="a-muted text-sm">Los avisos a tus pacientes y tu calendario.</p>
       </header>
 
       <section className="a-card a-card-pad space-y-4" aria-labelledby="cfg-rec">
@@ -54,37 +51,13 @@ export function ConfigView({ inicial, plantillaBase, calUrl, estado }: { inicial
         </form>
       </section>
 
-      <section className="a-card a-card-pad" aria-labelledby="cfg-cal">
-        <h2 id="cfg-cal" className="font-display text-lg font-semibold text-teal-deep">Calendario</h2>
-        {calUrl ? (
-          <>
-            <p className="a-muted mt-1 text-sm">En Google Calendar: Otros calendarios → Desde URL. En iPhone o Outlook, suscríbete al calendario con este enlace. Es privado: no lo compartas.</p>
-            <CopyField value={calUrl} label="URL del calendario" />
-          </>
-        ) : (
-          <p className="a-muted mt-1 text-sm">Activa el enlace definiendo <code>CALENDAR_TOKEN</code> y <code>NEXT_PUBLIC_SITE_URL</code> en el servidor.</p>
-        )}
-      </section>
-
-      <section className="a-card a-card-pad" aria-labelledby="cfg-est">
-        <h2 id="cfg-est" className="mb-2 font-display text-lg font-semibold text-teal-deep">Estado del sistema</h2>
-        <ul className="divide-y divide-teal/10">
-          {estado.map((e) => (
-            <li key={e.nombre} className="flex items-start gap-3 py-2.5">
-              <span className={`mt-1.5 size-2.5 shrink-0 rounded-full ${e.ok ? "bg-leaf" : "bg-[#d9a300]"}`} aria-hidden="true" />
-              <span className="min-w-0">
-                <span className="block text-sm font-semibold">{e.nombre} <span className="sr-only">{e.ok ? "(activo)" : "(pendiente)"}</span></span>
-                <span className="a-muted block text-sm">{e.detalle}</span>
-              </span>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section className="a-card a-card-pad text-sm" aria-label="Otros ajustes">
-        <p>Datos del negocio (WhatsApp, dirección, horarios, preguntas frecuentes): <Link href="/admin/sitio" className="font-semibold text-teal hover:underline">Sitio web</Link>.</p>
-        <p className="mt-1">Tu contraseña y perfil: <Link href="/admin/perfil" className="font-semibold text-teal hover:underline">Mi perfil</Link>. Usuarios y roles: <Link href="/admin/usuarios" className="font-semibold text-teal hover:underline">Usuarios</Link>.</p>
-      </section>
+      {calUrl && (
+        <section className="a-card a-card-pad" aria-labelledby="cfg-cal">
+          <h2 id="cfg-cal" className="font-display text-lg font-semibold text-teal-deep">Calendario</h2>
+          <p className="a-muted mt-1 text-sm">En Google Calendar: Otros calendarios → Desde URL. En iPhone o Outlook, suscríbete al calendario con este enlace. Es privado: no lo compartas.</p>
+          <CopyField value={calUrl} label="URL del calendario" />
+        </section>
+      )}
     </div>
   );
 }

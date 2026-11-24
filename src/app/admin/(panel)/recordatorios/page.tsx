@@ -1,4 +1,3 @@
-import { CopyField } from "@/components/admin/CopyField";
 import { requireSession } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
 import { waLink, diaLargo } from "@/lib/admin/format";
@@ -10,7 +9,6 @@ export const metadata = { title: "Recordatorios" };
 export default async function RecordatoriosPage() {
   await requireSession();
   const lista = await recordatoriosDeManana(await getDb());
-  const calUrl = process.env.CALENDAR_TOKEN ? `${(process.env.NEXT_PUBLIC_SITE_URL || "").replace(/\/$/, "")}/api/calendario?token=${process.env.CALENDAR_TOKEN}` : "";
   return (
     <div className="space-y-6">
       <header>
@@ -36,17 +34,6 @@ export default async function RecordatoriosPage() {
               </li>
             ))}
           </ul>
-        )}
-      </section>
-      <section className="glass rounded-3xl p-5">
-        <h2 className="font-display text-xl text-teal-deep">Conectar con tu calendario</h2>
-        {calUrl ? (
-          <>
-            <p className="mt-1 text-sm text-muted">Google Calendar → Otros calendarios → Desde URL (o suscripción en Apple/Outlook). Es privado: no lo compartas.</p>
-            <CopyField value={calUrl} label="URL del calendario" />
-          </>
-        ) : (
-          <p className="mt-1 text-sm text-muted">Define <code>CALENDAR_TOKEN</code> (texto largo aleatorio) y <code>NEXT_PUBLIC_SITE_URL</code> en el servidor para activar el enlace.</p>
         )}
       </section>
     </div>

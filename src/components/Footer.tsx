@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { services, site } from "@/lib/site";
 import { IconArrow, IconCalendar, IconChat, IconClipboard, IconHeart, IconPhone, IconPilates } from "./Icons";
 import { Reveal } from "./Reveal";
@@ -99,6 +100,10 @@ export function Footer() {
             <p>
               © 2026 TANFIP · Fisioterapia &amp; Pilates · by {site.owner}
             </p>
+            <nav aria-label="Legal" className="flex flex-wrap gap-x-5 gap-y-1">
+              <Link href="/privacidad" className="hover:text-white hover:underline">Privacidad</Link>
+              <Link href="/terminos" className="hover:text-white hover:underline">Términos y condiciones</Link>
+            </nav>
             <a href="#" className="inline-flex items-center gap-2 font-semibold text-white/85 hover:text-white">
               Volver arriba <IconArrow className="size-4 -rotate-90" />
             </a>
