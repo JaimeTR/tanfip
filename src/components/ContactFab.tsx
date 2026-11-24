@@ -27,14 +27,14 @@ export function ContactFab() {
   if (!site.whatsapp) return null;
 
   return (
-    <div ref={ref} className="fixed bottom-4 right-4 z-[55] flex flex-col items-end gap-3 sm:bottom-6 sm:right-6">
+    <div ref={ref} className="pointer-events-none fixed bottom-4 right-4 z-[55] flex flex-col items-end gap-3 sm:bottom-6 sm:right-6">
       <div
         id="contacto-panel"
         role="dialog"
         aria-label="Contactar por WhatsApp"
         inert={!open}
         className={`w-[min(21rem,calc(100vw-2rem))] origin-bottom-right overflow-hidden rounded-3xl border border-white/80 bg-white shadow-2xl shadow-teal-deep/25 transition-all duration-300 ${
-          open ? "translate-y-0 scale-100 opacity-100" : "pointer-events-none translate-y-3 scale-95 opacity-0"
+          open ? "pointer-events-auto translate-y-0 scale-100 opacity-100" : "pointer-events-none translate-y-3 scale-95 opacity-0"
         }`}
       >
         {/* cabecera tipo chat */}
@@ -111,7 +111,7 @@ export function ContactFab() {
         aria-controls="contacto-panel"
         aria-label={open ? "Cerrar contacto" : "Contactar por WhatsApp o llamada"}
         onClick={() => setOpen((o) => !o)}
-        className="group relative grid size-14 place-items-center rounded-full bg-[#25d366] text-white shadow-xl shadow-[#128c4a]/40 transition hover:scale-105"
+        className="pointer-events-auto group relative grid size-14 place-items-center rounded-full bg-[#25d366] text-white shadow-xl shadow-[#128c4a]/40 transition hover:scale-105"
       >
         {!open && <span aria-hidden="true" className="absolute inset-0 -z-10 animate-ping rounded-full bg-[#25d366]/40 [animation-duration:2.6s]" />}
         {open ? (

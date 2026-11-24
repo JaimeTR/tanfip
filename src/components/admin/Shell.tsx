@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import { cerrarSesion } from "@/app/admin/login/actions";
 import { IconCalendar } from "@/components/Icons";
-import { IconChevronLeft, IconChevronRight, IconGlobe, IconHome, IconInbox, IconLogout, IconMenu, IconSliders, IconUser2, IconUsers } from "./icons";
+import { IconBell, IconChevronLeft, IconChevronRight, IconGlobe, IconHome, IconInbox, IconLogout, IconMenu, IconSliders, IconUser2, IconUsers } from "./icons";
 import { UiProvider } from "./ui";
 
 type Props = {
@@ -19,6 +19,7 @@ const NAV = [
   { href: "/admin/solicitudes", label: "Solicitudes", Icon: IconInbox },
   { href: "/admin/pacientes", label: "Pacientes", Icon: IconUsers },
   { href: "/admin/citas", label: "Citas", Icon: IconCalendar },
+  { href: "/admin/recordatorios", label: "Recordatorios", Icon: IconBell },
   { href: "/admin/servicios", label: "Servicios y horarios", Icon: IconSliders },
   { href: "/admin/sitio", label: "Sitio web", Icon: IconGlobe, soloProfesional: true },
 ];
@@ -99,7 +100,7 @@ export function AdminShell({ user, nuevas, children }: Props) {
               aria-pressed={colapsado}
               aria-label={colapsado ? "Expandir menú lateral" : "Colapsar menú lateral"}
               title={colapsado ? "Expandir menú" : "Colapsar menú"}
-              className="btn-icon hidden shrink-0 lg:inline-grid"
+              className="btn-icon side-collapse shrink-0"
             >
               {colapsado ? <IconChevronRight className="size-5" /> : <IconChevronLeft className="size-5" />}
             </button>

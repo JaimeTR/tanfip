@@ -50,3 +50,4 @@ export const IconNote = mk("ico-sway", <><path d="M6 3.500h9l4 4V20.500H6Z" /><p
 export const IconTarget = mk("ico-spin", <><circle cx="12" cy="12" r="8" /><circle cx="12" cy="12" r="4" /><circle cx="12" cy="12" r=".8" /></>);
 export const IconSparkle = mk("ico-spin", <path d="M12 3c.6 4.500 2.500 6.400 7 7-4.500.6-6.400 2.500-7 7-.6-4.500-2.500-6.400-7-7 4.500-.6 6.400-2.500 7-7Z" />);
 export const IconUser2 = mk("ico-sway", <><circle cx="12" cy="8" r="3.500" /><path d="M5 20c.8-4 3.500-6 7-6s6.200 2 7 6" /></>);
+export const IconBell = mk("ico-sway", <><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15Z" /><path d="M10 20.5a2 2 0 0 0 4 0" /></>);
